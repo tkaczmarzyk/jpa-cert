@@ -14,6 +14,14 @@
 	</properties>
 
 	<dependencies>
+		<!-- jee -->
+		<dependency>
+			<groupId>org.glassfish.extras</groupId>
+			<artifactId>glassfish-embedded-all</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+	
+		<!-- general dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit-dep</artifactId>
