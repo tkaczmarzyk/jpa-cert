@@ -11,6 +11,25 @@ public abstract class CustomerMatchers {
 	private CustomerMatchers() {
 	}
 	
+	public static Matcher<Customer> customer(final Long id) {
+		return new BaseMatcher<Customer>() {
+			
+			@Override
+			public boolean matches(Object item) {
+				if (item instanceof Customer) {
+					Customer customer = (Customer) item;
+					return id.equals(customer.getId());
+				}
+				return false;
+			}
+
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("Customer (" + id + ")");
+			}
+		};
+	}
+	
 	public static Matcher<Customer> customer(final String firstname, final String lastname) {
 		return new BaseMatcher<Customer>() {
 			

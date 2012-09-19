@@ -1,11 +1,17 @@
 package net.kaczmarzyk.jpacert.customer;
 
 import static net.kaczmarzyk.jpacert.customer.CustomerMatchers.customer;
+import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
+import static net.kaczmarzyk.jpacert.test.EntityMatchers.entityWithId;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import net.kaczmarzyk.jpacert.customer.domain.Customer;
+import net.kaczmarzyk.jpacert.customer.domain.Order;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,12 +25,30 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		bean = lookup(CustomerManagerBean.class);
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void shouldBePossibleToFindPersistedCustomer() {
-		bean.saveCustomer("Tom", "McExample");
+		bean.createCustomer("Tom", "McExample");
 		
-		assertThat(bean.findCustomers("McExample"), (Matcher) hasItem(customer("Tom", "McExample")));
+		assertThat(bean.findCustomersByLastname("McExample"), hasItem(customer("Tom", "McExample")));
 	}
 
+	@Test
+	public void findCustomerWithPendingOrders_shouldReturnAllCustomersWithAtLeastOnePendingOrder() {
+		Customer customerWithoutAnyOrder = new Customer("Tester", "McTest");
+		bean.saveCustomer(customerWithoutAnyOrder);
+		
+		Customer customerWithPendingOrder = new Customer("Tester II", "McTest");
+		customerWithPendingOrder.addOrder(new Order("testOrder1").completed());
+		customerWithPendingOrder.addOrder(new Order("testOrder2"));
+		bean.saveCustomer(customerWithPendingOrder);
+		
+		Customer customerWithoutPendingOrder = new Customer("Tester III", "McTest");
+		customerWithoutPendingOrder.addOrder(new Order("testOrder4").cancelled());
+		customerWithoutPendingOrder.addOrder(new Order("testOrder5").completed());
+		bean.saveCustomer(customerWithoutPendingOrder);
+		
+		List<Customer> customersFound = bean.findCustomerWithPendingOrders();
+		assertEquals(1, customersFound.size());
+		assertThat(customersFound, hasItem(entityWithId(customerWithPendingOrder.getId())));
+	}
 }

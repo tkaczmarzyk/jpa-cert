@@ -1,8 +1,12 @@
 package net.kaczmarzyk.jpacert.customer.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -15,6 +19,9 @@ public class Customer {
 	
 	private String lastname;
 
+	@OneToMany(mappedBy="customer")
+	private Collection<Order> orders;
+	
 	
 	Customer() {
 	}
@@ -42,6 +49,23 @@ public class Customer {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Collection<Order> getOrders() {
+		return orders;
+	}
+
+	public void addOrder(Order order) {
+		if (orders == null) {
+			orders = new ArrayList<Order>();
+		}
+		orders.add(order);
+		order.setCustomer(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", fullname=" + firstname + " " + lastname + "]";
 	}
 	
 }
