@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	version="1.0">
+	
+	<persistence-unit name="defaultUnit" transaction-type="JTA">
+		<jta-data-source>jdbc/__default</jta-data-source>
+        <properties>
+            <property name="eclipselink.logging.level" value="INFO"/>
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+        </properties>
+	</persistence-unit>
+</persistence>

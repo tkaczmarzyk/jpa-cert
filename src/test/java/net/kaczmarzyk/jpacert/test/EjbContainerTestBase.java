@@ -34,7 +34,11 @@ public abstract class EjbContainerTestBase {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> T lookup(Class<T> beanClass) throws NamingException {
-		return (T) context.lookup("java:global/" + APPLICATION_NAME + "/" + MODULE_NAME + "/" + beanClass.getSimpleName());
+	protected <T> T lookup(Class<T> beanClass) {
+		try {
+			return (T) context.lookup("java:global/" + APPLICATION_NAME + "/" + MODULE_NAME + "/" + beanClass.getSimpleName());
+		} catch (NamingException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 }
