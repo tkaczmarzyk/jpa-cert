@@ -1,6 +1,6 @@
-package net.kaczmarzyk.jpacert.customer;
+package net.kaczmarzyk.jpacert.service;
 
-import static net.kaczmarzyk.jpacert.customer.CustomerMatchers.customer;
+import static net.kaczmarzyk.jpacert.service.CustomerMatchers.customer;
 import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 import static net.kaczmarzyk.jpacert.test.EntityMatchers.entityWithId;
 import static org.hamcrest.Matchers.hasItem;
