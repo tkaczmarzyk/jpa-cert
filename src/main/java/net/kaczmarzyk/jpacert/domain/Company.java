@@ -6,11 +6,13 @@ import java.util.Collection;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 
@@ -21,6 +23,10 @@ public class Company {
 	private Long id;
 	
 	@ElementCollection
+	@CollectionTable(
+		name="company_addresses",
+		joinColumns={@JoinColumn(name="company_id")}
+	)
 	@AttributeOverrides({
 		@AttributeOverride(name="zip", column=@Column(name="postal_code"))
 	})
