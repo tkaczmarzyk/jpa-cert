@@ -1,9 +1,11 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 
 
-@Embeddable
+@Embeddable @Access(AccessType.FIELD)
 public class Address {
 
 	private String street;

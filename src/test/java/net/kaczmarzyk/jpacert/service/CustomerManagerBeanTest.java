@@ -1,6 +1,7 @@
 package net.kaczmarzyk.jpacert.service;
 
-import static net.kaczmarzyk.jpacert.service.CustomerMatchers.customer;
+import static net.kaczmarzyk.jpacert.domain.AddressUtil.testAddress;
+import static net.kaczmarzyk.jpacert.domain.CustomerMatchers.customer;
 import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 import static net.kaczmarzyk.jpacert.test.EntityMatchers.entityWithId;
 import static org.hamcrest.Matchers.hasItem;
@@ -8,10 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import net.kaczmarzyk.jpacert.domain.Address;
 import net.kaczmarzyk.jpacert.domain.Customer;
 import net.kaczmarzyk.jpacert.domain.Order;
-import net.kaczmarzyk.jpacert.service.CustomerManagerBean;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
 import org.junit.Before;
@@ -54,7 +53,4 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		assertThat(customersFound, hasItem(entityWithId(customerWithPendingOrder.getId())));
 	}
 
-	private Address testAddress() {
-		return new Address.AddressBuilder().street("street").city("city").zip("zip").state("state").build();
-	}
 }

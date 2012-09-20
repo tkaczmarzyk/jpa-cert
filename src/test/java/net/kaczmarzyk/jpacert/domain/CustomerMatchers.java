@@ -1,4 +1,4 @@
-package net.kaczmarzyk.jpacert.service;
+package net.kaczmarzyk.jpacert.domain;
 
 import net.kaczmarzyk.jpacert.domain.Customer;
 
