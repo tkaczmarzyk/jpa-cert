@@ -1,11 +1,13 @@
-package net.kaczmarzyk.jpacert.customer;
+package net.kaczmarzyk.jpacert.service;
 
 import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import static net.kaczmarzyk.jpacert.customer.domain.Address.AddressBuilder.*;
+
+import static net.kaczmarzyk.jpacert.domain.Address.AddressBuilder.*;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,9 +15,9 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
-import net.kaczmarzyk.jpacert.customer.domain.Customer;
-import net.kaczmarzyk.jpacert.customer.domain.Order;
-import net.kaczmarzyk.jpacert.customer.domain.OrderStatus;
+import net.kaczmarzyk.jpacert.domain.Customer;
+import net.kaczmarzyk.jpacert.domain.Order;
+import net.kaczmarzyk.jpacert.domain.OrderStatus;
 
 
 

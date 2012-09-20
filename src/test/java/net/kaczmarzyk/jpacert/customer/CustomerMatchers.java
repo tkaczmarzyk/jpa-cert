@@ -1,6 +1,6 @@
 package net.kaczmarzyk.jpacert.customer;
 
-import net.kaczmarzyk.jpacert.customer.domain.Customer;
+import net.kaczmarzyk.jpacert.domain.Customer;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

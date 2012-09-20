@@ -1,4 +1,4 @@
-package net.kaczmarzyk.jpacert.customer.domain;
+package net.kaczmarzyk.jpacert.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;

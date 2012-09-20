@@ -8,9 +8,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import net.kaczmarzyk.jpacert.customer.domain.Address;
-import net.kaczmarzyk.jpacert.customer.domain.Customer;
-import net.kaczmarzyk.jpacert.customer.domain.Order;
+import net.kaczmarzyk.jpacert.domain.Address;
+import net.kaczmarzyk.jpacert.domain.Customer;
+import net.kaczmarzyk.jpacert.domain.Order;
+import net.kaczmarzyk.jpacert.service.CustomerManagerBean;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
 import org.junit.Before;
