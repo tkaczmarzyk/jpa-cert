@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import static net.kaczmarzyk.jpacert.customer.domain.Address.AddressBuilder.*;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -27,7 +28,7 @@ public class CustomerManagerBean {
 	
 	
 	public void createCustomer(String firstname, String lastname) {
-		em.persist(new Customer(firstname, lastname));
+		em.persist(new Customer(firstname, lastname, address().street("street").city("city").state("state").zip("zip").build()));
 	}
 	
 	public void saveCustomer(Customer customer) {

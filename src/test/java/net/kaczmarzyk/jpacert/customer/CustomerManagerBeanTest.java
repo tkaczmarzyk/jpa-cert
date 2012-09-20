@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import net.kaczmarzyk.jpacert.customer.domain.Address;
 import net.kaczmarzyk.jpacert.customer.domain.Customer;
 import net.kaczmarzyk.jpacert.customer.domain.Order;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
@@ -34,15 +35,15 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 
 	@Test
 	public void findCustomerWithPendingOrders_shouldReturnAllCustomersWithAtLeastOnePendingOrder() {
-		Customer customerWithoutAnyOrder = new Customer("Tester", "McTest");
+		Customer customerWithoutAnyOrder = new Customer("Tester", "McTest", testAddress());
 		bean.saveCustomer(customerWithoutAnyOrder);
 		
-		Customer customerWithPendingOrder = new Customer("Tester II", "McTest");
+		Customer customerWithPendingOrder = new Customer("Tester II", "McTest", testAddress());
 		customerWithPendingOrder.addOrder(new Order("testOrder1").completed());
 		customerWithPendingOrder.addOrder(new Order("testOrder2"));
 		bean.saveCustomer(customerWithPendingOrder);
 		
-		Customer customerWithoutPendingOrder = new Customer("Tester III", "McTest");
+		Customer customerWithoutPendingOrder = new Customer("Tester III", "McTest", testAddress());
 		customerWithoutPendingOrder.addOrder(new Order("testOrder4").cancelled());
 		customerWithoutPendingOrder.addOrder(new Order("testOrder5").completed());
 		bean.saveCustomer(customerWithoutPendingOrder);
@@ -50,5 +51,9 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		List<Customer> customersFound = bean.findCustomerWithPendingOrders();
 		assertEquals(1, customersFound.size());
 		assertThat(customersFound, hasItem(entityWithId(customerWithPendingOrder.getId())));
+	}
+
+	private Address testAddress() {
+		return new Address.AddressBuilder().street("street").city("city").zip("zip").state("state").build();
 	}
 }
