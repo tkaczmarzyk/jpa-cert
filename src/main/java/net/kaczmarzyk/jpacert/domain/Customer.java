@@ -3,9 +3,13 @@ package net.kaczmarzyk.jpacert.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +39,10 @@ public class Customer {
 	
 	@Temporal(TemporalType.TIMESTAMP) // java.sql.(Date/Time/Timestamp) - no @Temporal required
 	private Date creationDate;
+	
+	@ElementCollection
+	@Column(name="number")
+	private Set<String> telephoneNumbers;
 	
 	@Embedded // optional
 	private Address address;
@@ -99,4 +107,10 @@ public class Customer {
 		this.address = address;
 	}
 
+	public Set<String> getTelephoneNumbers() {
+		if (telephoneNumbers == null) {
+			telephoneNumbers = new HashSet<String>();
+		}
+		return telephoneNumbers;
+	}
 }
