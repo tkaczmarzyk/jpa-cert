@@ -2,6 +2,10 @@ package net.kaczmarzyk.jpacert.test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
@@ -25,6 +29,7 @@ public abstract class EjbContainerTestBase {
 		properties.put(EJBContainer.APP_NAME, APPLICATION_NAME);
 		
 		container = EJBContainer.createEJBContainer(properties);
+		
 		context = container.getContext();
 	}
 	
@@ -39,6 +44,21 @@ public abstract class EjbContainerTestBase {
 			return (T) context.lookup("java:global/" + APPLICATION_NAME + "/" + MODULE_NAME + "/" + beanClass.getSimpleName());
 		} catch (NamingException e) {
 			throw new IllegalStateException(e);
+		}
+	}
+	
+	protected void enableTransactionLogs() {
+		Logger logger = Logger.getLogger("javax.enterprise.resource.jta");
+		logger.addHandler(new ConsoleHandler());
+		
+		setLevel(Level.ALL, logger);
+	}
+	
+	private void setLevel(Level level, Logger logger) {
+		logger.setLevel(level);
+		
+		for (Handler handler : logger.getHandlers()) {
+			handler.setLevel(level);
 		}
 	}
 }

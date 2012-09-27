@@ -1,9 +1,9 @@
 package net.kaczmarzyk.jpacert.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
@@ -12,9 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,8 +36,9 @@ public class Customer {
 	@Transient // transient because property access is used
 	private String lastname;
 
-	@OneToMany(mappedBy="customer")
-	private Collection<Order> orders;
+	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY)
+	@OrderBy("date DESC, id DESC")
+	private List<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP) // java.sql.(Date/Time/Timestamp) - no @Temporal required
 	private Date creationDate;
@@ -78,7 +81,7 @@ public class Customer {
 		return id;
 	}
 
-	public Collection<Order> getOrders() {
+	public List<Order> getOrders() {
 		return orders;
 	}
 

@@ -35,6 +35,11 @@ public class Order {
 	Order() {
 	}
 	
+	public Order(String name, Date date) {
+		this(name);
+		this.date = date;
+	}
+	
 	public Order(String name) {
 		this.name = name;
 		this.date = new Date();
@@ -81,6 +86,12 @@ public class Order {
 	public Order cancelled() {
 		status = OrderStatus.CANCELLED;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", date=" + date + ", status=" + status
+				+ ", name=" + name + "]";
 	}
 
 }

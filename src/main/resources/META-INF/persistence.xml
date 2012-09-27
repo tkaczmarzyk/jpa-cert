@@ -4,9 +4,20 @@
 	
 	<persistence-unit name="defaultUnit" transaction-type="JTA">
 		<jta-data-source>jdbc/__default</jta-data-source>
+		
         <properties>
-            <property name="eclipselink.logging.level" value="INFO"/>
             <property name="eclipselink.ddl-generation" value="create-tables"/>
+
+			<property name="eclipselink.logging.logger" value="DefaultLogger"/>            
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.timestamp" value="false"/>
+			<property name="eclipselink.logging.thread" value="false"/>
+			<property name="eclipselink.logging.session" value="true"/>
+			<property name="eclipselink.logging.exceptions" value="true"/>
         </properties>
+        
+        <shared-cache-mode>NONE</shared-cache-mode>
 	</persistence-unit>
 </persistence>

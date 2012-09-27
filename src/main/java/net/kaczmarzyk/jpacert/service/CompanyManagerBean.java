@@ -2,7 +2,10 @@ package net.kaczmarzyk.jpacert.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,9 +20,16 @@ import net.kaczmarzyk.jpacert.domain.Employee;
 @LocalBean
 public class CompanyManagerBean {
 
+	private static final Logger log = Logger.getLogger(CompanyManagerBean.class.getName()); 
+	
 	@PersistenceContext
 	private EntityManager em;
 	
+	
+	@PostConstruct
+	protected void init() {
+		log.setLevel(Level.ALL);
+	}
 	
 	public void save(Company company) {
 		em.persist(company);
@@ -36,6 +46,8 @@ public class CompanyManagerBean {
 	}
 	
 	public List<Company> findByEmployee(Employee employee) {
+		log.info("find by employee: " + employee);
+		
 		return em.createQuery("select c from Company c where :employee member of c.employees", Company.class)
 				.setParameter("employee", employee)
 				.getResultList();

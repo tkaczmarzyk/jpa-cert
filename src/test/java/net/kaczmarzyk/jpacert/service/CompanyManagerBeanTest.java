@@ -2,9 +2,9 @@ package net.kaczmarzyk.jpacert.service;
 
 import static net.kaczmarzyk.jpacert.domain.AddressUtil.testAddress;
 import static net.kaczmarzyk.jpacert.domain.CompanyMatchers.company;
+import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 	}
 	
 	@Test
-	public void findByEmployee_shouldReturnAllCompaniesWichHaveTheAddressInTheirCollection() {
+	public void findByEmployee_shouldReturnAllCompaniesWichHaveTheEmployeeInTheirCollection() {
 		Company comp1 = new Company("Testers & CO", testAddress("1"));
 		comp1.addEmployee(new Employee("McTest"));
 		comp1.addEmployee(new Employee("McTest2"));
