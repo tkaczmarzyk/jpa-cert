@@ -6,18 +6,22 @@ import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import net.kaczmarzyk.jpacert.domain.Customer;
+import net.kaczmarzyk.jpacert.domain.Order;
+import net.kaczmarzyk.jpacert.domain.OrderStatus;
 
 
 
 @Stateless
 @LocalBean
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public class CustomerManagerBean {
 	
 	@PersistenceContext
@@ -48,4 +52,26 @@ public class CustomerManagerBean {
 			.getResultList();
 	}
 	
+	public List<Customer> findCustomerWithPendingOrders() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
+		
+		Root<Customer> customer = query.from(Customer.class);
+		
+		Subquery<Order> sq = query.subquery(Order.class);
+		Root<Customer> sqCustomer = sq.correlate(customer);
+		Join<Customer, Order> order = sqCustomer.join("orders");
+		sq.select(order);
+		sq.where(cb.equal(order.get("status"), OrderStatus.PENDING));
+		
+		query.select(customer);
+		query.where(cb.exists(sq));
+		
+		return em.createQuery(query).getResultList();
+	}
+
+	public void refresh(Customer customer) {
+		em.flush();
+		em.refresh(customer);
+	}
 }
