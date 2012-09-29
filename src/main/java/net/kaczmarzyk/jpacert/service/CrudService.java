@@ -28,4 +28,9 @@ public class CrudService {
 		em.flush();
 		em.refresh(entity);
 	}
+
+	public void flushAndClear() {
+		em.flush();
+		em.clear();
+	}
 }

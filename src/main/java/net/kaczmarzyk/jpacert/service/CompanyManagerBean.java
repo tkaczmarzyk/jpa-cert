@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import net.kaczmarzyk.jpacert.domain.Company;
 import net.kaczmarzyk.jpacert.domain.Employee;
+import net.kaczmarzyk.jpacert.domain.Shareholder;
 
 
 @Stateless
@@ -40,5 +41,11 @@ public class CompanyManagerBean {
 				" where :employee member of b.employees", Company.class)
 				.setParameter("employee", employee)
 				.getResultList();
+	}
+
+	public Shareholder findShareholder(String name) {
+		return em.createQuery("select s from Shareholder s where s.name = :name", Shareholder.class)
+				.setParameter("name", name)
+				.getSingleResult();
 	}
 }
