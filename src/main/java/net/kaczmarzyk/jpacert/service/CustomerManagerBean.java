@@ -70,7 +70,7 @@ public class CustomerManagerBean {
 		return em.createQuery(query).getResultList();
 	}
 
-	public void refresh(Customer customer) {
+	public void flushAndRefresh(Customer customer) {
 		em.flush();
 		em.refresh(customer);
 	}

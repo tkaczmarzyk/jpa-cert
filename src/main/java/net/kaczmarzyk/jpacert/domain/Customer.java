@@ -2,9 +2,7 @@ package net.kaczmarzyk.jpacert.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -17,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,8 +43,9 @@ public class Customer {
 	private Date creationDate;
 	
 	@ElementCollection
+	@OrderColumn
 	@Column(name="number")
-	private Set<String> telephoneNumbers;
+	private List<String> telephoneNumbers;
 	
 	@Embedded // optional
 	private Address address;
@@ -110,9 +110,9 @@ public class Customer {
 		this.address = address;
 	}
 
-	public Set<String> getTelephoneNumbers() {
+	public List<String> getTelephoneNumbers() {
 		if (telephoneNumbers == null) {
-			telephoneNumbers = new HashSet<>();
+			telephoneNumbers = new ArrayList<>();
 		}
 		return telephoneNumbers;
 	}

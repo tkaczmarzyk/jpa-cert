@@ -50,11 +50,26 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		
 		bean.saveCustomer(customer);
 		
-		bean.refresh(customer); // to refetch from db
+		bean.flushAndRefresh(customer); // to refetch from db
 		
 		assertEquals(newDate(2012, 10, 2), customer.getOrders().get(0).getDate());
 		assertEquals(newDate(2012, 9, 3), customer.getOrders().get(1).getDate());
 		assertEquals(newDate(2012, 9, 1), customer.getOrders().get(2).getDate());
+	}
+	
+	@Test
+	public void telephoneNumbersShouldBeOrdered() {
+		Customer c = new Customer("Tester", "McTest", testAddress());
+		c.getTelephoneNumbers().add("987");
+		c.getTelephoneNumbers().add("012");
+		c.getTelephoneNumbers().add("654");
+		
+		bean.saveCustomer(c);
+		bean.flushAndRefresh(c);
+		
+		assertThat(c.getTelephoneNumbers().get(0), is("987"));
+		assertThat(c.getTelephoneNumbers().get(1), is("012"));
+		assertThat(c.getTelephoneNumbers().get(2), is("654"));
 	}
 	
 	@Test
