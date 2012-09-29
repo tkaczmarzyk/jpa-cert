@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 
 import org.junit.After;
@@ -54,6 +55,14 @@ public abstract class EjbContainerTestBase {
 	protected <T> T lookup(Class<T> beanClass) {
 		try {
 			return (T) context.lookup("java:global/" + APPLICATION_NAME + "/" + MODULE_NAME + "/" + beanClass.getSimpleName());
+		} catch (NamingException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	protected DataSource getDataSource() {
+		try {
+			return (DataSource) context.lookup("jdbc/__default");
 		} catch (NamingException e) {
 			throw new IllegalStateException(e);
 		}

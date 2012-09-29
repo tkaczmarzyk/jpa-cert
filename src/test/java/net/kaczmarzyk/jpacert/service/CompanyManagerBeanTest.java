@@ -10,7 +10,13 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import net.kaczmarzyk.jpacert.domain.Company;
 import net.kaczmarzyk.jpacert.domain.Employee;
@@ -33,6 +39,27 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 		companyBean = lookup(CompanyManagerBean.class);
 		emploeeBean = lookup(EmployeeManagerBean.class);
 		crud = lookup(CrudService.class);
+	}
+	
+	@Test
+	public void showTables() throws SQLException {
+		DataSource ds = getDataSource();
+		try (Connection connection = ds.getConnection()) {
+			DatabaseMetaData dbmd = connection.getMetaData();
+			try (ResultSet tableSet = dbmd.getTables(null, null, null, null)) {
+				while (tableSet.next()) {
+				    String strTableName = tableSet.getString("TABLE_NAME");
+				    if (!strTableName.startsWith("SYS")) {
+				    	System.out.println("+ " + strTableName);
+				    	try (ResultSet columnSet = dbmd.getColumns(null, null, strTableName, null)) {
+					    	while (columnSet.next()) {
+					    		System.out.println("`-- " + columnSet.getString("COLUMN_NAME"));
+					    	}
+				    	}
+				    }
+				}
+			}
+		}
 	}
 	
 	@Test
