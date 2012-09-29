@@ -42,10 +42,6 @@ public class CustomerManagerBean {
 		return c;
 	}
 	
-	public void saveCustomer(Customer customer) {
-		em.persist(customer);
-	}
-	
 	public List<Customer> findCustomersByLastname(String lastname) {
 		return em.createQuery("select c from Customer c where c.lastname = :lastname", Customer.class)
 			.setParameter("lastname", lastname)
@@ -70,8 +66,4 @@ public class CustomerManagerBean {
 		return em.createQuery(query).getResultList();
 	}
 
-	public void flushAndRefresh(Customer customer) {
-		em.flush();
-		em.refresh(customer);
-	}
 }

@@ -22,10 +22,13 @@ import org.junit.Test;
 public class CustomerManagerBeanTest extends EjbContainerTestBase {
 
 	private CustomerManagerBean bean;
+	private CrudService crud;
+	
 	
 	@Before
 	public void lookup() {
 		bean = lookup(CustomerManagerBean.class);
+		crud = lookup(CrudService.class);
 	}
 	
 	@Test
@@ -48,9 +51,9 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		customer.addOrder(new Order("testOrder2", newDate(2012, 10, 2)));
 		customer.addOrder(new Order("testOrder3", newDate(2012, 9, 1)));
 		
-		bean.saveCustomer(customer);
+		crud.persist(customer);
 		
-		bean.flushAndRefresh(customer); // to refetch from db
+		crud.flushAndRefresh(customer); // to refetch from db
 		
 		assertEquals(newDate(2012, 10, 2), customer.getOrders().get(0).getDate());
 		assertEquals(newDate(2012, 9, 3), customer.getOrders().get(1).getDate());
@@ -64,8 +67,8 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 		c.getTelephoneNumbers().add("012");
 		c.getTelephoneNumbers().add("654");
 		
-		bean.saveCustomer(c);
-		bean.flushAndRefresh(c);
+		crud.persist(c);
+		crud.flushAndRefresh(c);
 		
 		assertThat(c.getTelephoneNumbers().get(0), is("987"));
 		assertThat(c.getTelephoneNumbers().get(1), is("012"));
@@ -75,17 +78,17 @@ public class CustomerManagerBeanTest extends EjbContainerTestBase {
 	@Test
 	public void findCustomerWithPendingOrders_shouldReturnAllCustomersWithAtLeastOnePendingOrder() {
 		Customer customerWithoutAnyOrder = new Customer("Tester", "McTest", testAddress());
-		bean.saveCustomer(customerWithoutAnyOrder);
+		crud.persist(customerWithoutAnyOrder);
 		
 		Customer customerWithPendingOrder = new Customer("Tester II", "McTest", testAddress());
 		customerWithPendingOrder.addOrder(new Order("testOrder1").completed());
 		customerWithPendingOrder.addOrder(new Order("testOrder2"));
-		bean.saveCustomer(customerWithPendingOrder);
+		crud.persist(customerWithPendingOrder);
 		
 		Customer customerWithoutPendingOrder = new Customer("Tester III", "McTest", testAddress());
 		customerWithoutPendingOrder.addOrder(new Order("testOrder4").cancelled());
 		customerWithoutPendingOrder.addOrder(new Order("testOrder5").completed());
-		bean.saveCustomer(customerWithoutPendingOrder);
+		crud.persist(customerWithoutPendingOrder);
 		
 		List<Customer> customersFound = bean.findCustomerWithPendingOrders();
 		assertThat(customersFound, not(contains(customerWithoutAnyOrder)));
