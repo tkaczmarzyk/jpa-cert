@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 
@@ -30,8 +29,6 @@ public class Employee {
 	@Column(name="phone_number")
 	private Map<PhoneType, String> phoneNumbers;
 	
-	@ManyToOne
-	private Branch branch;
 	
 	Employee() {
 	}
@@ -59,11 +56,4 @@ public class Employee {
 		return phoneNumbers != null ? phoneNumbers.get(type) : null;
 	}
 
-	public void setBranch(Branch branch) {
-		this.branch = branch;
-	}
-	
-	public Branch getBranch() {
-		return branch;
-	}
 }

@@ -13,8 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 
 @Entity
@@ -33,7 +34,10 @@ public class Branch {
 	})
 	private Collection<Address> addresses;
 	
-	@OneToMany(mappedBy="branch")
+	@ManyToMany
+	@JoinTable(joinColumns=@JoinColumn(name="branch_id"),
+			inverseJoinColumns=@JoinColumn(name="employee_id")
+	)
 	private Collection<Employee> employees;
 	
 	@ManyToOne
@@ -67,7 +71,6 @@ public class Branch {
 			employees = new ArrayList<>();
 		}
 		employees.add(e);
-		e.setBranch(this);
 	}
 	
 	public Collection<Employee> getEmployees() {
