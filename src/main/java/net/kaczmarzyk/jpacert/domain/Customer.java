@@ -87,7 +87,7 @@ public class Customer {
 
 	public void addOrder(Order order) {
 		if (orders == null) {
-			orders = new ArrayList<Order>();
+			orders = new ArrayList<>();
 		}
 		orders.add(order);
 		order.setCustomer(this);
@@ -112,7 +112,7 @@ public class Customer {
 
 	public Set<String> getTelephoneNumbers() {
 		if (telephoneNumbers == null) {
-			telephoneNumbers = new HashSet<String>();
+			telephoneNumbers = new HashSet<>();
 		}
 		return telephoneNumbers;
 	}

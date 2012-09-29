@@ -43,7 +43,7 @@ public class Company {
 	
 	public Company(String name, Address address, Address... addresses) {
 		this.name = name;
-		this.addresses = new ArrayList<Address>();
+		this.addresses = new ArrayList<>();
 		this.addresses.add(address);
 		if (addresses != null) {
 			this.addresses.addAll(Arrays.asList(addresses));
@@ -56,7 +56,7 @@ public class Company {
 
 	public void addAddress(Address address) {
 		if (addresses == null) {
-			addresses = new ArrayList<Address>();
+			addresses = new ArrayList<>();
 		}
 		addresses.add(address);
 	}
@@ -75,7 +75,7 @@ public class Company {
 	
 	public void addEmployee(Employee e) {
 		if (employees == null) {
-			employees = new ArrayList<Employee>();
+			employees = new ArrayList<>();
 		}
 		employees.add(e);
 		e.setCompany(this);
