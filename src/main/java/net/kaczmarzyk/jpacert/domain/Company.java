@@ -1,18 +1,11 @@
 package net.kaczmarzyk.jpacert.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 
@@ -22,45 +15,19 @@ public class Company {
 	@Id @GeneratedValue
 	private Long id;
 	
-	@ElementCollection
-	@CollectionTable(
-		name="company_addresses",
-		joinColumns={@JoinColumn(name="company_id")}
-	)
-	@AttributeOverrides({
-		@AttributeOverride(name="zip", column=@Column(name="postal_code"))
-	})
-	private Collection<Address> addresses;
-	
 	private String name;
 
 	@OneToMany(mappedBy="company")
-	private Collection<Employee> employees;
+	private Collection<Branch> branches;
 	
 	
 	Company() {
 	}
 	
-	public Company(String name, Address address, Address... addresses) {
+	public Company(String name) {
 		this.name = name;
-		this.addresses = new ArrayList<>();
-		this.addresses.add(address);
-		if (addresses != null) {
-			this.addresses.addAll(Arrays.asList(addresses));
-		}
 	}
 	
-	public Collection<Address> getAddress() {
-		return addresses;
-	}
-
-	public void addAddress(Address address) {
-		if (addresses == null) {
-			addresses = new ArrayList<>();
-		}
-		addresses.add(address);
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -73,15 +40,15 @@ public class Company {
 		return id;
 	}
 	
-	public void addEmployee(Employee e) {
-		if (employees == null) {
-			employees = new ArrayList<>();
+	public Collection<Branch> getBranches() {
+		if (branches == null) {
+			branches = new ArrayList<>();
 		}
-		employees.add(e);
-		e.setCompany(this);
+		return branches;
 	}
 	
-	public Collection<Employee> getEmployees() {
-		return employees;
+	public void addBranch(Branch branch) {
+		getBranches().add(branch);
+		branch.setCompany(this);
 	}
 }

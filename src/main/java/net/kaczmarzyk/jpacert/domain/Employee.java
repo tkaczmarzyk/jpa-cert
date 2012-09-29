@@ -31,7 +31,7 @@ public class Employee {
 	private Map<PhoneType, String> phoneNumbers;
 	
 	@ManyToOne
-	private Company company;
+	private Branch branch;
 	
 	Employee() {
 	}
@@ -48,14 +48,6 @@ public class Employee {
 		return lastname;
 	}
 	
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	
 	public void setPhoneNumber(PhoneType type, String number) {
 		if (phoneNumbers == null) {
 			phoneNumbers = new HashMap<>();
@@ -65,5 +57,13 @@ public class Employee {
 	
 	public String getPhoneNumber(PhoneType type) {
 		return phoneNumbers != null ? phoneNumbers.get(type) : null;
+	}
+
+	public void setBranch(Branch branch) {
+		this.branch = branch;
+	}
+	
+	public Branch getBranch() {
+		return branch;
 	}
 }

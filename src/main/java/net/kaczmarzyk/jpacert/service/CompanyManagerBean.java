@@ -48,7 +48,8 @@ public class CompanyManagerBean {
 	public List<Company> findByEmployee(Employee employee) {
 		log.info("find by employee: " + employee);
 		
-		return em.createQuery("select c from Company c where :employee member of c.employees", Company.class)
+		return em.createQuery("select distinct c from Company c inner join c.branches b" +
+				" where :employee member of b.employees", Company.class)
 				.setParameter("employee", employee)
 				.getResultList();
 	}
