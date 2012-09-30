@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import net.kaczmarzyk.jpacert.domain.Employee;
+import net.kaczmarzyk.jpacert.domain.PhoneType;
 
 
 @Stateless
@@ -17,6 +18,14 @@ public class EmployeeManagerBean {
 	@PersistenceContext
 	private EntityManager em;
 	
+	
+	public String findPhoneNumber(Long employeeId, PhoneType phoneType) {
+		return em.createQuery("select value(phones)" +
+				" from Employee e inner join e.phoneNumbers phones" +
+				" where key(phones) = :phoneType", String.class)
+				.setParameter("phoneType", phoneType)
+				.getSingleResult();
+	}
 	
 	public List<Employee> findByLastname(String lastname) {
 		return em.createQuery("select e from Employee e where e.lastname = :lastname", Employee.class)

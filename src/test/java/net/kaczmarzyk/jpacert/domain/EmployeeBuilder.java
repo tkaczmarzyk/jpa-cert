@@ -18,6 +18,11 @@ public class EmployeeBuilder {
 		return this;
 	}
 	
+	public EmployeeBuilder withPhoneNum(PhoneType type, String num) {
+		employee.setPhoneNumber(type, num);
+		return this;
+	}
+	
 	public Employee build() {
 		return employee;
 	}
