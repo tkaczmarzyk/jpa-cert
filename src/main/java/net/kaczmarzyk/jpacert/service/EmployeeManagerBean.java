@@ -19,6 +19,25 @@ public class EmployeeManagerBean {
 	private EntityManager em;
 	
 	
+	public List<Object[]> findMaxNumCertificatesByBranch() {
+		return em.createQuery("select distinct b, count(c) from Branch b inner join b.employees e join e.certificates c" +
+				" group by b, e" +
+				" having count(c) >= ALL" +
+				" (select count(e2.certificates) from Employee e2" +
+				"   where e2 member of b.employees" +
+				"	group by e2)" +
+				" order by b.id", Object[].class)
+				.getResultList();
+	}
+	
+	public List<Employee> findByCertification(String certName) {
+		return em.createQuery("select e from Employee e" +
+				" where" +
+				" exists (select c from e.certificates c where c.name = :cert)", Employee.class)
+				.setParameter("cert", certName)
+				.getResultList();
+	}
+	
 	public String findPhoneNumber(Long employeeId, PhoneType phoneType) {
 		return em.createQuery("select value(phones)" +
 				" from Employee e inner join e.phoneNumbers phones" +

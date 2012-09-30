@@ -18,6 +18,13 @@ public class EmployeeBuilder {
 		return this;
 	}
 	
+	public EmployeeBuilder withCertificate(String certName) {
+		Certificate cert = new Certificate(certName);
+		employee.getCertificates().add(cert);
+		cert.setEmployee(employee);
+		return this;
+	}
+	
 	public EmployeeBuilder withPhoneNum(PhoneType type, String num) {
 		employee.setPhoneNumber(type, num);
 		return this;
@@ -31,5 +38,12 @@ public class EmployeeBuilder {
 		EmployeeBuilder builder = new EmployeeBuilder(lastname);
 		crud.persist(builder.employee);
 		return builder;
+	}
+
+	public EmployeeBuilder withCertificates(String... certs) {
+		for (String cert : certs) {
+			withCertificate(cert);
+		}
+		return this;
 	}
 }

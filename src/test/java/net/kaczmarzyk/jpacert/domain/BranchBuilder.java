@@ -1,5 +1,7 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import net.kaczmarzyk.jpacert.service.CrudService;
+
 public class BranchBuilder {
 
 	private Branch branch;
@@ -22,7 +24,14 @@ public class BranchBuilder {
 		return branch;
 	}
 	
+	public Branch build(CrudService crud) {
+		build();
+		crud.persist(branch);
+		return branch;
+	}
+	
 	public static BranchBuilder aBranch(Address address) {
 		return new BranchBuilder(address);
 	}
+
 }

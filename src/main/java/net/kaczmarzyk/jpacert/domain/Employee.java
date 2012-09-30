@@ -1,6 +1,8 @@
 package net.kaczmarzyk.jpacert.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -29,6 +32,9 @@ public class Employee {
 	@MapKeyColumn(name="phone_type")
 	@Column(name="phone_number")
 	private Map<PhoneType, String> phoneNumbers;
+	
+	@OneToMany(mappedBy="employee")
+	private Collection<Certificate> certificates;
 	
 	@Column(scale=2)
 	private BigDecimal salary;
@@ -67,5 +73,12 @@ public class Employee {
 	
 	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
+	}
+	
+	public Collection<Certificate> getCertificates() {
+		if (certificates == null) {
+			certificates = new ArrayList<>();
+		}
+		return certificates;
 	}
 }
