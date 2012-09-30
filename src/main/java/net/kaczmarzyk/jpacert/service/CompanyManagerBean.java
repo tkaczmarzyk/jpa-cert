@@ -30,6 +30,12 @@ public class CompanyManagerBean {
 		log.setLevel(Level.ALL);
 	}
 	
+	public Company findByName(String name) {
+		return em.createNamedQuery("findCompanyByName", Company.class)
+				.setParameter("name", name)
+				.getSingleResult();
+	}
+	
 	public List<Company> findByEmployee(Employee employee) {
 		log.info("find by employee: " + employee);
 		

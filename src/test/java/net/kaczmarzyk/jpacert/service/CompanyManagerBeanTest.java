@@ -32,11 +32,28 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 	private CompanyManagerBean companyBean;
 	private EmployeeManagerBean emploeeBean;
 	
+	private Company comp1;
+	private Company comp2;
+	
 	
 	@Before
-	public void lookup() {
+	public void init() {
 		companyBean = lookup(CompanyManagerBean.class);
 		emploeeBean = lookup(EmployeeManagerBean.class);
+		
+		comp1 = aCompany("Testers & CO")
+			.with(aBranch(testAddress("b1"))
+					.with(anEmployee("McTest", crud))
+					.with(anEmployee("McTest2", crud)))
+			.build(crud);
+		
+		comp2 = aCompany("Jpa Certified Devs")
+			.with(aBranch(testAddress("b2"))
+					.with(anEmployee("Eclipselinker", crud)))
+			.with(aBranch(testAddress("b3"))
+					.with(anEmployee("Hibernatus", crud))
+					.with(anEmployee("OpenJdker", crud)))
+			.build(crud);
 	}
 	
 	@Test
@@ -61,41 +78,32 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 	}
 	
 	@Test
+	public void shouldFindCompanyWithProvidedName() {
+		Company company = companyBean.findByName("Jpa Certified Devs");
+		assertThat(company.getId(), is(comp2.getId()));
+	}
+	
+	@Test
 	public void shouldMaintainShares() {
-		Company comp = new Company("certified geeks");
 		Shareholder g1 = new Shareholder("Geek1");
 		crud.persist(g1);
-		comp.getShares().put(g1, 11);
+		comp1.getShares().put(g1, 11);
 		Shareholder g2 = new Shareholder("Geek2");
 		crud.persist(g2);
-		comp.getShares().put(g2, 81);
-		crud.persist(comp);
+		comp1.getShares().put(g2, 81);
 		
 		crud.flushAndClear();
 		
 		g1 = companyBean.findShareholder("Geek1");
 		g2 = companyBean.findShareholder("Geek2");
-		comp = crud.findById(Company.class, comp.getId());
+		comp1 = crud.findById(Company.class, comp1.getId());
 		
-		assertThat(comp.getShares().get(g1), is(11));
-		assertThat(comp.getShares().get(g2), is(81));
+		assertThat(comp1.getShares().get(g1), is(11));
+		assertThat(comp1.getShares().get(g2), is(81));
 	}
 	
 	@Test
 	public void findByEmployee_shouldReturnAllCompaniesWichHaveTheEmployeeInTheirCollection() {
-		aCompany("Testers & CO")
-				.with(aBranch(testAddress("b1"))
-						.with(anEmployee("McTest", crud))
-						.with(anEmployee("McTest2", crud)))
-				.build(crud);
-		aCompany("Jpa Certified Devs")
-				.with(aBranch(testAddress("b2"))
-						.with(anEmployee("Eclipselinker", crud)))
-				.with(aBranch(testAddress("b3"))
-						.with(anEmployee("Hibernatus", crud))
-						.with(anEmployee("OpenJdker", crud)))
-				.build(crud);
-		
 		Employee emp = emploeeBean.findByLastname("Hibernatus").get(0);
 		List<Company> companies = companyBean.findByEmployee(emp);
 		

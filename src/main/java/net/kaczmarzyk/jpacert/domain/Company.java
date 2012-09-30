@@ -12,15 +12,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 
 @Entity
+@NamedQueries(
+		@NamedQuery(name="findCompanyByName", query="select c from Company c where c.name = :name")
+)
 public class Company {
 
 	@Id @GeneratedValue
 	private Long id;
 	
+	@Column(unique=true)
 	private String name;
 
 	@OneToMany(mappedBy="company")
