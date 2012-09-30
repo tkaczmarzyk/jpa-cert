@@ -38,12 +38,17 @@ public class Company {
 	@Column(name="shares")
 	private Map<Shareholder, Integer> shares;
 	
+	@OneToMany(mappedBy="company")
+	private Collection<Project> projects;
+	
+	
 	Company() {
 	}
 	
 	public Company(String name) {
 		this.name = name;
 	}
+	
 	
 	public String getName() {
 		return name;
@@ -74,5 +79,12 @@ public class Company {
 			shares = new HashMap<>();
 		}
 		return shares;
+	}
+	
+	public Collection<Project> getProjects() {
+		if (projects == null) {
+			projects = new ArrayList<>();
+		}
+		return projects;
 	}
 }
