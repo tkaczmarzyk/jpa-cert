@@ -31,19 +31,30 @@ public abstract class EjbContainerTestBase {
 
 	@BeforeClass
 	public static void createContainer() {
-		Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put(EJBContainer.APP_NAME, APPLICATION_NAME);
-
-		container = EJBContainer.createEJBContainer(properties);
-
-		context = container.getContext();
-		
-		crud = lookup(CrudService.class);
+		if (container == null) {
+			Map<String, Object> properties = new HashMap<String, Object>();
+			properties.put(EJBContainer.APP_NAME, APPLICATION_NAME);
+	
+			container = EJBContainer.createEJBContainer(properties);
+			context = container.getContext();
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				@Override
+				public void run() {
+					try {
+						container.close();
+					} catch (Exception e) {
+						System.err.println(e);
+					}
+				}
+			});
+			
+			crud = lookup(CrudService.class);
+		}
 	}
 
 	@AfterClass
 	public static void closeContainer() {
-		container.close();
+		//container.close();
 	}
 
 	@Before
