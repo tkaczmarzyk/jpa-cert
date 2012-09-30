@@ -12,6 +12,7 @@ import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -24,6 +25,7 @@ import javax.sql.DataSource;
 import net.kaczmarzyk.jpacert.domain.Company;
 import net.kaczmarzyk.jpacert.domain.Employee;
 import net.kaczmarzyk.jpacert.domain.InternalProject;
+import net.kaczmarzyk.jpacert.domain.Project;
 import net.kaczmarzyk.jpacert.domain.Shareholder;
 import net.kaczmarzyk.jpacert.domain.TimeAndMaterialProject;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
@@ -84,6 +86,21 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 				}
 			}
 		}
+	}
+	
+	@Test
+	public void shouldUseDummyNameIfProjectNameNotProvided() {
+		Project p = anInternalProject(null).build(crud);
+		comp2.addProject(p);
+		
+		List<String> projects = companyBean.findProjectNames(comp2.getId());
+		assertThat(projects, hasItem("[noname]"));
+		
+		p.setName("the best!");
+		crud.merge(p);
+		projects = companyBean.findProjectNames(comp2.getId());
+		assertThat(projects, hasItem("the best!"));
+		assertThat(projects, not(hasItem("[noname]")));
 	}
 	
 	@Test

@@ -1,5 +1,7 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import net.kaczmarzyk.jpacert.service.CrudService;
+
 public class ProjectBuilder {
 
 	private Project project;
@@ -9,6 +11,12 @@ public class ProjectBuilder {
 	}
 	
 	public Project build() {
+		return project;
+	}
+	
+	public Project build(CrudService crud) {
+		build();
+		crud.persist(project);
 		return project;
 	}
 	
@@ -23,4 +31,5 @@ public class ProjectBuilder {
 	public static ProjectBuilder anInternalProject(String name) {
 		return new ProjectBuilder(new InternalProject(name));
 	}
+
 }

@@ -12,6 +12,7 @@ public class TimeAndMaterialProject extends Project {
 	}
 	
 	public TimeAndMaterialProject(String name) {
+		super(name);
 	}
 
 }

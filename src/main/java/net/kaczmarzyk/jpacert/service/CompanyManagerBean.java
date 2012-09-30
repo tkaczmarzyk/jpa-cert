@@ -61,4 +61,14 @@ public class CompanyManagerBean {
 				.setParameter("name", name)
 				.getSingleResult();
 	}
+
+	public List<String> findProjectNames(Long companyId) {
+		return em.createQuery("select case when p.name is not null then p.name" +
+				" else '[noname]'" + //or just: select coalesce(p.name, '[noname]') from...
+				" end" +
+				" from Project p" + 
+				" where p.company.id = :companyId", String.class)
+				.setParameter("companyId", companyId)
+				.getResultList();
+	}
 }

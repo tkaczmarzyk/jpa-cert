@@ -24,6 +24,10 @@ public class CrudService {
 		em.persist(entity);
 	}
 	
+	public <T> T merge(T entity) {
+		return em.merge(entity);
+	}
+	
 	public void flushAndRefresh(Object entity) {
 		em.flush();
 		em.refresh(entity);
