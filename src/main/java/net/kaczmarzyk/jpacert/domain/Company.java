@@ -87,4 +87,9 @@ public class Company {
 		}
 		return projects;
 	}
+
+	public void addProject(Project project) {
+		getProjects().add(project);
+		project.setCompany(this);
+	}
 }

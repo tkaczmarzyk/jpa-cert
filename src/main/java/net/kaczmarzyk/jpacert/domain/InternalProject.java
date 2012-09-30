@@ -8,4 +8,11 @@ import javax.persistence.Entity;
 @DiscriminatorValue("internal")
 public class InternalProject extends Project {
 
+	InternalProject() {
+	}
+	
+	public InternalProject(String name) {
+		super(name);
+	}
+
 }

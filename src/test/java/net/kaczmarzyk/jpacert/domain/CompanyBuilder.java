@@ -14,7 +14,15 @@ public class CompanyBuilder {
 	public CompanyBuilder with(BranchBuilder builder) {
 		company.addBranch(builder.build());
 		return this;
-	} 
+	}
+	
+	public CompanyBuilder with(ProjectBuilder builder, ProjectBuilder... builders) {
+		company.addProject(builder.build());
+		for (ProjectBuilder b : builders) {
+			company.addProject(b.build());
+		}
+		return this;
+	}
 	
 	public Company build() {
 		return company;

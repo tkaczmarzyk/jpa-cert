@@ -7,4 +7,11 @@ import javax.persistence.Entity;
 @DiscriminatorValue("fixed")
 public class FixedPriceProject extends Project {
 
+	FixedPriceProject() {
+	}
+	
+	public FixedPriceProject(String name) {
+		super(name);
+	}
+
 }

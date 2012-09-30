@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import net.kaczmarzyk.jpacert.domain.Company;
 import net.kaczmarzyk.jpacert.domain.Employee;
+import net.kaczmarzyk.jpacert.domain.Project;
 import net.kaczmarzyk.jpacert.domain.Shareholder;
 
 
@@ -28,6 +29,16 @@ public class CompanyManagerBean {
 	@PostConstruct
 	protected void init() {
 		log.setLevel(Level.ALL);
+	}
+	
+	
+	public List<Project> findProjects(Long companyId, Class<? extends Project> type) {
+		return em.createQuery("select p from Project p" +
+				" where p.company.id = :compId" +
+				" and type(p) = :pType", Project.class)
+				.setParameter("compId", companyId)
+				.setParameter("pType", type)
+				.getResultList();
 	}
 	
 	public Company findByName(String name) {

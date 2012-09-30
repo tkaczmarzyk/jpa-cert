@@ -5,6 +5,9 @@ import static net.kaczmarzyk.jpacert.domain.BranchBuilder.aBranch;
 import static net.kaczmarzyk.jpacert.domain.CompanyBuilder.aCompany;
 import static net.kaczmarzyk.jpacert.domain.CompanyMatchers.company;
 import static net.kaczmarzyk.jpacert.domain.EmployeeBuilder.anEmployee;
+import static net.kaczmarzyk.jpacert.domain.ProjectBuilder.aFixedPriceProject;
+import static net.kaczmarzyk.jpacert.domain.ProjectBuilder.aTimeAndMaterialProject;
+import static net.kaczmarzyk.jpacert.domain.ProjectBuilder.anInternalProject;
 import static net.kaczmarzyk.jpacert.test.AssertUtil.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -20,7 +23,9 @@ import javax.sql.DataSource;
 
 import net.kaczmarzyk.jpacert.domain.Company;
 import net.kaczmarzyk.jpacert.domain.Employee;
+import net.kaczmarzyk.jpacert.domain.InternalProject;
 import net.kaczmarzyk.jpacert.domain.Shareholder;
+import net.kaczmarzyk.jpacert.domain.TimeAndMaterialProject;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
 import org.junit.Before;
@@ -53,6 +58,10 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 			.with(aBranch(testAddress("b3"))
 					.with(anEmployee("Hibernatus", crud))
 					.with(anEmployee("OpenJdker", crud)))
+			.with(aFixedPriceProject("Lottery Engine"))
+			.with(aTimeAndMaterialProject("Integration"))
+			.with(anInternalProject("RnD"))
+			.with(anInternalProject("Business Processes"))
 			.build(crud);
 	}
 	
@@ -109,5 +118,11 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 		
 		assertThat(companies, hasSize(1));
 		assertThat(companies, hasItem(company("Jpa Certified Devs")));
+	}
+	
+	@Test
+	public void shouldFilterProjectsByType() {
+		assertThat(companyBean.findProjects(comp2.getId(), InternalProject.class), hasSize(2));
+		assertThat(companyBean.findProjects(comp2.getId(), TimeAndMaterialProject.class), hasSize(1));
 	}
 }

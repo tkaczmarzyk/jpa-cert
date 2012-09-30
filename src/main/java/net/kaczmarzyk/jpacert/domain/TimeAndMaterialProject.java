@@ -8,4 +8,10 @@ import javax.persistence.Entity;
 @DiscriminatorValue("time")
 public class TimeAndMaterialProject extends Project {
 
+	TimeAndMaterialProject() {
+	}
+	
+	public TimeAndMaterialProject(String name) {
+	}
+
 }
