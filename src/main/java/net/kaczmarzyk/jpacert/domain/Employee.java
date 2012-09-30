@@ -1,5 +1,6 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +30,16 @@ public class Employee {
 	@Column(name="phone_number")
 	private Map<PhoneType, String> phoneNumbers;
 	
+	@Column(scale=2)
+	private BigDecimal salary;
+	
 	
 	Employee() {
 	}
 	
-	public Employee(String lastname) {
+	public Employee(String lastname, BigDecimal salary) {
 		this.lastname = lastname;
+		this.salary = salary;
 	}
 	
 	public Long getId() {
@@ -56,4 +61,11 @@ public class Employee {
 		return phoneNumbers != null ? phoneNumbers.get(type) : null;
 	}
 
+	public BigDecimal getSalary() {
+		return salary;
+	}
+	
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
 }

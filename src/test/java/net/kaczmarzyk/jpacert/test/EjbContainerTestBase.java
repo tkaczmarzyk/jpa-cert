@@ -13,6 +13,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 
+import net.kaczmarzyk.jpacert.service.CrudService;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,6 +26,7 @@ public abstract class EjbContainerTestBase {
 	private static final String MODULE_NAME = "EjbModule";
 
 	protected static Context context;
+	protected static CrudService crud;
 	private static EJBContainer container;
 
 	@BeforeClass
@@ -34,6 +37,8 @@ public abstract class EjbContainerTestBase {
 		container = EJBContainer.createEJBContainer(properties);
 
 		context = container.getContext();
+		
+		crud = lookup(CrudService.class);
 	}
 
 	@AfterClass
@@ -52,7 +57,7 @@ public abstract class EjbContainerTestBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T> T lookup(Class<T> beanClass) {
+	protected static <T> T lookup(Class<T> beanClass) {
 		try {
 			return (T) context.lookup("java:global/" + APPLICATION_NAME + "/" + MODULE_NAME + "/" + beanClass.getSimpleName());
 		} catch (NamingException e) {

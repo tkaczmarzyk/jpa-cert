@@ -1,5 +1,7 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import net.kaczmarzyk.jpacert.service.CrudService;
+
 public class CompanyBuilder {
 
 	private Company company;
@@ -15,6 +17,12 @@ public class CompanyBuilder {
 	} 
 	
 	public Company build() {
+		return company;
+	}
+	
+	public Company build(CrudService crud) {
+		build();
+		crud.persist(company);
 		return company;
 	}
 	

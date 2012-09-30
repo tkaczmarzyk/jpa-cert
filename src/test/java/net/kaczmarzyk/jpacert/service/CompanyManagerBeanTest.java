@@ -31,14 +31,12 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 
 	private CompanyManagerBean companyBean;
 	private EmployeeManagerBean emploeeBean;
-	private CrudService crud;
 	
 	
 	@Before
 	public void lookup() {
 		companyBean = lookup(CompanyManagerBean.class);
 		emploeeBean = lookup(EmployeeManagerBean.class);
-		crud = lookup(CrudService.class);
 	}
 	
 	@Test
@@ -85,20 +83,18 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 	
 	@Test
 	public void findByEmployee_shouldReturnAllCompaniesWichHaveTheEmployeeInTheirCollection() {
-		Company comp1 = aCompany("Testers & CO")
+		aCompany("Testers & CO")
 				.with(aBranch(testAddress("b1"))
 						.with(anEmployee("McTest", crud))
 						.with(anEmployee("McTest2", crud)))
-				.build();
-		companyBean.save(comp1);
-		Company comp2 = aCompany("Jpa Certified Devs")
+				.build(crud);
+		aCompany("Jpa Certified Devs")
 				.with(aBranch(testAddress("b2"))
 						.with(anEmployee("Eclipselinker", crud)))
 				.with(aBranch(testAddress("b3"))
 						.with(anEmployee("Hibernatus", crud))
 						.with(anEmployee("OpenJdker", crud)))
-				.build();
-		companyBean.save(comp2);
+				.build(crud);
 		
 		Employee emp = emploeeBean.findByLastname("Hibernatus").get(0);
 		List<Company> companies = companyBean.findByEmployee(emp);

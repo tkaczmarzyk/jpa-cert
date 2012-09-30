@@ -14,6 +14,10 @@ public class BranchBuilder {
 		return this;
 	}
 	
+	public BranchBuilder with(EmployeeBuilder emp) {
+		return with(emp.build());
+	}
+	
 	public Branch build() {
 		return branch;
 	}

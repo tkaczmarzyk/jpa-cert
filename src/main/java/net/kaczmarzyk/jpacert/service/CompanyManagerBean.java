@@ -30,10 +30,6 @@ public class CompanyManagerBean {
 		log.setLevel(Level.ALL);
 	}
 	
-	public void save(Company company) {
-		em.persist(company);
-	}
-	
 	public List<Company> findByEmployee(Employee employee) {
 		log.info("find by employee: " + employee);
 		

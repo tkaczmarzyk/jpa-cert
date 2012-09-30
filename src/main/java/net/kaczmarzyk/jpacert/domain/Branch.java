@@ -91,4 +91,8 @@ public class Branch {
 	void setCompany(Company company) {
 		this.company = company;
 	}
+
+	public Long getId() {
+		return id;
+	}
 }
