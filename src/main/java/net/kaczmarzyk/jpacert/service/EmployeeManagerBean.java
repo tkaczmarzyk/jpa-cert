@@ -1,5 +1,7 @@
 package net.kaczmarzyk.jpacert.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -8,13 +10,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.MapJoin;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import net.kaczmarzyk.jpacert.domain.Branch;
+import net.kaczmarzyk.jpacert.domain.Branch_;
 import net.kaczmarzyk.jpacert.domain.Certificate;
 import net.kaczmarzyk.jpacert.domain.Employee;
+import net.kaczmarzyk.jpacert.domain.Employee_;
 import net.kaczmarzyk.jpacert.domain.PhoneType;
 
 
@@ -55,6 +61,29 @@ public class EmployeeManagerBean {
 			.groupBy(branch, employee)
 			.having(cb.greaterThanOrEqualTo(cb.count(cert), cb.all(sq)))
 			.orderBy(cb.asc(branch.get("id")));
+		
+		return em.createQuery(query)
+				.getResultList();
+	}
+	
+	public List<Object[]> findMaxNumCertificatesByBranch_criteriaTypeSafe() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+		
+		Root<Branch> branch = query.from(Branch.class);
+		MapJoin<Branch, Long, Employee> employee = branch.join(Branch_.employees);
+		Join<Employee, Certificate> cert = employee.join(Employee_.certificates);
+		
+		Subquery<Long> sq = query.subquery(Long.class);
+		Root<Employee> emp2 = sq.from(Employee.class);
+		sq.select(cb.count(emp2.get(Employee_.certificates)))
+			.where(cb.isMember(emp2, branch.<List<Employee>>get("employees"))) // FIXME
+			.groupBy(emp2);
+		
+		query.multiselect(branch, cb.count(cert)).distinct(true)
+			.groupBy(branch, employee)
+			.having(cb.greaterThanOrEqualTo(cb.count(cert), cb.all(sq)))
+			.orderBy(cb.asc(branch.get(Branch_.id)));
 		
 		return em.createQuery(query)
 				.getResultList();
