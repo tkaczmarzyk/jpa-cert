@@ -6,7 +6,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
+import net.kaczmarzyk.jpacert.domain.Branch;
+import net.kaczmarzyk.jpacert.domain.Certificate;
 import net.kaczmarzyk.jpacert.domain.Employee;
 import net.kaczmarzyk.jpacert.domain.PhoneType;
 
@@ -27,6 +34,29 @@ public class EmployeeManagerBean {
 				"   where e2 member of b.employees" +
 				"	group by e2)" +
 				" order by b.id", Object[].class)
+				.getResultList();
+	}
+	
+	public List<Object[]> findMaxNumCertificatesByBranch_criteria() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+		
+		Root<Branch> branch = query.from(Branch.class);
+		Join<Branch, Employee> employee = branch.join("employees");
+		Join<Employee, Certificate> cert = employee.join("certificates");
+		
+		Subquery<Long> sq = query.subquery(Long.class);
+		Root<Employee> emp2 = sq.from(Employee.class);
+		sq.select(cb.count(emp2.get("certificates")))
+			.where(cb.isMember(emp2, branch.<List<Employee>>get("employees")))
+			.groupBy(emp2);
+		
+		query.multiselect(branch, cb.count(cert)).distinct(true)
+			.groupBy(branch, employee)
+			.having(cb.greaterThanOrEqualTo(cb.count(cert), cb.all(sq)))
+			.orderBy(cb.asc(branch.get("id")));
+		
+		return em.createQuery(query)
 				.getResultList();
 	}
 	

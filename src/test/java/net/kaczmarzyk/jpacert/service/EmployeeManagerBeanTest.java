@@ -55,6 +55,11 @@ public class EmployeeManagerBeanTest extends EjbContainerTestBase {
 		
 		assertThat(result, hasSize(2));
 		assertThat(result, hasItems(entry(b1, 3), entry(b2, 2)));
+		
+		List<Object[]> result2 = bean.findMaxNumCertificatesByBranch_criteria();
+		
+		assertThat(result2, hasSize(2));
+		assertThat(result2, hasItems(entry(b1, 3), entry(b2, 2)));
 	}
 	
 	private Matcher<Object[]> entry(final Branch branch, final long numCerts) {
