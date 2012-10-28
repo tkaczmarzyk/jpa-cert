@@ -2,26 +2,20 @@ package net.kaczmarzyk.jpacert.domain;
 
 import java.util.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 @Entity
 @Table(name="orders")
 public class Order {
 
-	@Id @GeneratedValue
-	private Long id;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	@EmbeddedId
+	private OrderKey key;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
@@ -37,25 +31,25 @@ public class Order {
 	
 	public Order(String name, Date date) {
 		this(name);
-		this.date = date;
+		this.key = new OrderKey(date);
 	}
 	
 	public Order(String name) {
 		this.name = name;
-		this.date = new Date();
+		this.key = new OrderKey(new Date());
 		this.status = OrderStatus.PENDING;
 	}
 	
 	public Date getDate() {
-		return date;
+		return key.getDate();
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
+		this.key.setDate(date);
 	}
 
 	public Long getId() {
-		return id;
+		return key.getId();
 	}
 
 	public OrderStatus getStatus() {
@@ -87,10 +81,14 @@ public class Order {
 		status = OrderStatus.CANCELLED;
 		return this;
 	}
+	
+	public OrderKey getKey() {
+		return key;
+	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", date=" + date + ", status=" + status
+		return "Order [id=" + key.getId() + ", date=" + key.getDate() + ", status=" + status
 				+ ", name=" + name + "]";
 	}
 

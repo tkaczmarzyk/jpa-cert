@@ -36,7 +36,7 @@ public class Customer {
 	private String lastname;
 
 	@OneToMany(mappedBy="customer", fetch=FetchType.LAZY)
-	@OrderBy("date DESC, id DESC")
+	@OrderBy("key.date DESC")
 	private List<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP) // java.sql.(Date/Time/Timestamp) - no @Temporal required
