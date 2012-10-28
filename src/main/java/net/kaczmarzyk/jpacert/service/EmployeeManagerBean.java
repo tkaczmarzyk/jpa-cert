@@ -1,7 +1,5 @@
 package net.kaczmarzyk.jpacert.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -10,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.MapJoin;
 import javax.persistence.criteria.Root;
