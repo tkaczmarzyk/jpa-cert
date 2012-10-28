@@ -1,12 +1,17 @@
 package net.kaczmarzyk.jpacert.service;
 
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
 import net.kaczmarzyk.jpacert.domain.Order;
+import net.kaczmarzyk.jpacert.domain.OrderHistory;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,4 +34,14 @@ public class OrderManagerBeanTest extends EjbContainerTestBase {
 		assertNotNull(bean.findOrder(order.getKey()));
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void orphanedOrderHistoryShouldBeRemoved() {
+		bean.createHistory(order);
+		crud.flushAndClear();
+		assertThat(crud.findAll(OrderHistory.class), (Matcher) not(empty()));
+		bean.clearHistory(order);
+		
+		assertThat(crud.findAll(OrderHistory.class), (Matcher) empty());
+	}
 }

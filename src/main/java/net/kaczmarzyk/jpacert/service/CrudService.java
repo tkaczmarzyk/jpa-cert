@@ -1,6 +1,7 @@
 package net.kaczmarzyk.jpacert.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -36,5 +37,10 @@ public class CrudService {
 	public void flushAndClear() {
 		em.flush();
 		em.clear();
+	}
+
+	public <T> List<T> findAll(Class<T> clazz) {
+		return em.createQuery("select e from " + clazz.getSimpleName() + " e", clazz)
+				.getResultList();
 	}
 }

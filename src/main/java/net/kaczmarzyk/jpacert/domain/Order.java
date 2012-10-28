@@ -1,5 +1,7 @@
 package net.kaczmarzyk.jpacert.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.EmbeddedId;
@@ -7,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -22,6 +25,9 @@ public class Order {
 	
 	@ManyToOne
 	private Customer customer;
+	
+	@OneToMany(orphanRemoval = true)
+	private Collection<OrderHistory> history;
 	
 	private String name;
 	
@@ -85,7 +91,18 @@ public class Order {
 	public OrderKey getKey() {
 		return key;
 	}
+	
+	public Collection<OrderHistory> getHistory() {
+		return history;
+	}
 
+	public void addHistory(OrderHistory orderHistory) {
+		if (history == null) {
+			history = new ArrayList<>();
+		}
+		history.add(orderHistory);
+	}
+	
 	@Override
 	public String toString() {
 		return "Order [id=" + key.getId() + ", date=" + key.getDate() + ", status=" + status
