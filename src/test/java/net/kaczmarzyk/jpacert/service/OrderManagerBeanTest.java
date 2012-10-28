@@ -1,6 +1,6 @@
 package net.kaczmarzyk.jpacert.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Date;
 
@@ -13,19 +13,20 @@ import org.junit.Test;
 public class OrderManagerBeanTest extends EjbContainerTestBase {
 
 	private OrderManagerBean bean;
+	private Order order;
 	
 	@Before
 	public void init() {
 		bean = lookup(OrderManagerBean.class);
+		
+		order = new Order("programming in scala", new Date());
+		crud.persist(order);
+		crud.flushAndClear();
 	}
 	
 	@Test
 	public void findOrder_shouldFindByCompositePrimaryKey() {
-		Order order = new Order("programming in scala", new Date());
-		crud.persist(order);
-		
-		crud.flushAndClear();
-		
 		assertNotNull(bean.findOrder(order.getKey()));
 	}
+	
 }

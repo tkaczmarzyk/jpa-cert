@@ -23,4 +23,5 @@ public class OrderManagerBean {
 				.setParameter("key", key)
 				.getSingleResult();
 	}
+	
 }
