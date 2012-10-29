@@ -2,6 +2,7 @@ package net.kaczmarzyk.jpacert.service;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -11,6 +12,7 @@ import net.kaczmarzyk.jpacert.domain.Order;
 import net.kaczmarzyk.jpacert.domain.OrderHistory;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
+import org.beandiff.BeanDiff;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,13 @@ public class OrderManagerBeanTest extends EjbContainerTestBase {
 		order = new Order("programming in scala", new Date());
 		crud.persist(order);
 		crud.flushAndClear();
+	}
+	
+	@Test
+	public void findOrder_sqlQueryShouldInitializeTheEntity() {
+		Order o = bean.findOrder_sql(order.getKey());
+		
+		assertFalse(BeanDiff.diff(order, o).hasDifference());
 	}
 	
 	@Test

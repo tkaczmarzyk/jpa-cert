@@ -25,6 +25,12 @@ public class OrderManagerBean {
 				.getSingleResult();
 	}
 
+	public Order findOrder_sql(OrderKey key) {
+		return (Order) em.createNativeQuery("select * from orders where id = ?id and date = ?date", Order.class)
+				.setParameter("id", key.getId())
+				.setParameter("date", key.getDate())
+				.getSingleResult();
+	}
 
 	public OrderHistory createHistory(Order order) {
 		if (!em.contains(order)) {
