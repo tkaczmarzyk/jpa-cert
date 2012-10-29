@@ -4,17 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="orders")
+@SecondaryTables(
+	@SecondaryTable(name="order_details", pkJoinColumns={
+		@PrimaryKeyJoinColumn(name="order_id", referencedColumnName="id"),
+		@PrimaryKeyJoinColumn(name="order_date", referencedColumnName="date")
+	})
+)
 public class Order {
 
 	@EmbeddedId
@@ -31,6 +41,8 @@ public class Order {
 	
 	private String name;
 	
+	@Column(table="order_details")
+	private String description;
 	
 	Order() {
 	}
