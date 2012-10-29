@@ -31,6 +31,17 @@ public class OrderManagerBean {
 				.setParameter("date", key.getDate())
 				.getSingleResult();
 	}
+	
+	public Object[] findOrderWithHistoryLength(OrderKey key) {
+		Object[] result = (Object[]) em.createNativeQuery("select id as order_id, date, status, customer_id, name," +
+				" (select count(1) from orders_orderhistory where id = ?id and date = ?date) history_length" +
+				" from orders" +
+				" where id = ?id and date =?date", "orderWithHistoryLengthMapping")
+				.setParameter("id", key.getId())
+				.setParameter("date", key.getDate())
+				.getSingleResult();
+		return result;
+	}
 
 	public OrderHistory createHistory(Order order) {
 		if (!em.contains(order)) {

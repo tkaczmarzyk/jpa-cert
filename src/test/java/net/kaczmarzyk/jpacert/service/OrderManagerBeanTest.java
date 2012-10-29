@@ -2,6 +2,7 @@ package net.kaczmarzyk.jpacert.service;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -52,5 +53,18 @@ public class OrderManagerBeanTest extends EjbContainerTestBase {
 		bean.clearHistory(order);
 		
 		assertThat(crud.findAll(OrderHistory.class), (Matcher) empty());
+	}
+	
+	@Test
+	public void findOrderWithHistoryLength_sqlShouldUseMappingToProperlyInitializeResult() {
+		bean.createHistory(order);
+		bean.createHistory(order);
+		crud.flushAndClear();
+		
+		Object[] result = bean.findOrderWithHistoryLength(order.getKey());
+		
+		assertEquals(2, result.length);
+//		assertFalse(BeanDiff.diff(order, result[0]).hasDifference()); // @OneToMany relationship is not initialized in native queries
+		assertEquals(2, result[1]);
 	}
 }

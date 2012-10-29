@@ -5,15 +5,20 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityResult;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FieldResult;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 
 
@@ -24,6 +29,15 @@ import javax.persistence.Table;
 		@PrimaryKeyJoinColumn(name="order_id", referencedColumnName="id"),
 		@PrimaryKeyJoinColumn(name="order_date", referencedColumnName="date")
 	})
+)
+@SqlResultSetMappings(
+	@SqlResultSetMapping(name="orderWithHistoryLengthMapping",
+		entities=@EntityResult(entityClass=Order.class,
+			fields={@FieldResult(name="key.id", column="order_id"),
+				@FieldResult(name="key.date", column="date")
+				// rest is defaulted to name=column
+			}),
+		columns=@ColumnResult(name="history_length"))
 )
 public class Order {
 
