@@ -14,6 +14,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>repo.kaczmarzyk.net</id>
+			<url>http://repo.kaczmarzyk.net</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -62,6 +69,13 @@
 		</dependency>
 
 		<!-- general dependencies -->
+		<dependency>
+			<groupId>org.beandiff</groupId>
+			<artifactId>beandiff</artifactId>
+			<version>0.0.1</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit-dep</artifactId>
