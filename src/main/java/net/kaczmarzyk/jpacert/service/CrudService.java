@@ -60,4 +60,8 @@ public class CrudService {
 		return em.createQuery("select e from " + clazz.getSimpleName() + " e", clazz)
 				.getResultList();
 	}
+
+	public void refresh(Object entity) {
+		em.refresh(entity);
+	}
 }
