@@ -33,7 +33,11 @@ import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.DecimalMin;
+
+import net.kaczmarzyk.jpacert.validation.Update;
 
 
 @Entity
@@ -57,6 +61,9 @@ public class Employee {
 	@DecimalMin("1000")
 	@Column(scale=2)
 	private BigDecimal salary;
+	
+	@Transient
+	private BigDecimal oldSalary;
 	
 	
 	Employee() {
@@ -91,6 +98,7 @@ public class Employee {
 	}
 	
 	public void setSalary(BigDecimal salary) {
+		this.oldSalary = this.salary;
 		this.salary = salary;
 	}
 	
@@ -99,5 +107,10 @@ public class Employee {
 			certificates = new ArrayList<>();
 		}
 		return certificates;
+	}
+	
+	@AssertFalse(groups = {Update.class})
+	private boolean isSalaryLowered() {
+		return oldSalary != null && oldSalary.compareTo(salary) > 0;
 	}
 }

@@ -6,6 +6,9 @@
 		<jta-data-source>jdbc/__default</jta-data-source>
 		
         <properties>
+        	<property name="javax.persistence.validation.group.pre-update"
+        		value="net.kaczmarzyk.jpacert.validation.Update"/>
+        
             <property name="eclipselink.ddl-generation" value="create-tables"/>
 
 			<property name="eclipselink.logging.logger" value="DefaultLogger"/>            

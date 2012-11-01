@@ -45,6 +45,7 @@ public abstract class EjbContainerTestBase {
 	protected static Context context;
 	protected static CrudService crud;
 	private static EJBContainer container;
+	private static Level logLevel;
 
 	@BeforeClass
 	public static void createContainer() {
@@ -112,6 +113,16 @@ public abstract class EjbContainerTestBase {
 		setLevel(Level.ALL, logger);
 	}
 
+	protected void disableLogs() {
+		Logger rootLogger = Logger.getGlobal();
+		logLevel = rootLogger.getLevel();
+		setLevel(Level.OFF, rootLogger);
+	}
+	
+	protected void restoreLogs() {
+		Logger.getGlobal().setLevel(logLevel);
+	}
+	
 	private void setLevel(Level level, Logger logger) {
 		logger.setLevel(level);
 

@@ -27,11 +27,24 @@ import javax.validation.ConstraintViolationException;
 
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class ValidationTest extends EjbContainerTestBase {
 
+	
+	@Before
+	public void disableLogs() {
+		// to avoid confusion during commandline builds
+		super.disableLogs();
+	}
+	
+	@After
+	public void enableLogs() {
+		restoreLogs();
+	}
 	
 	@Test
 	public void shouldThrowValidationExceptionIfSalaryIsBelowTheMinimum() {
@@ -44,5 +57,30 @@ public class ValidationTest extends EjbContainerTestBase {
 		} catch (EJBTransactionRolledbackException ex) {
 			assertThat(ex, causedBy(ConstraintViolationException.class));
 		}
+	}
+	
+	@Test
+	public void shouldNotAllowToLowerTheSalary() {
+		Employee e = new Employee("Homer", new BigDecimal("5000"));
+		crud.persist(e);
+		crud.flushAndClear();
+		
+		try {
+			e.setSalary(new BigDecimal("4100"));
+			crud.merge(e);
+			crud.flushAndClear();
+		} catch (EJBTransactionRolledbackException ex) {
+			assertThat(ex, causedBy(ConstraintViolationException.class));
+		}
+	}
+	
+	@Test
+	public void shouldAllowToRaiseTheSalary() {
+		Employee e = new Employee("Homer", new BigDecimal("5000"));
+		crud.persist(e);
+		crud.flushAndClear();
+		
+		e.setSalary(new BigDecimal("5100"));
+		crud.merge(e);
 	}
 }

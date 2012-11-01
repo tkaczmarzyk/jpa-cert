@@ -27,7 +27,7 @@ public class EmployeeBuilder {
 	
 	
 	private EmployeeBuilder(String lastname) {
-		employee = new Employee(lastname, BigDecimal.valueOf(5000));
+		employee = new Employee(lastname, BigDecimal.valueOf(1000));
 	}
 	
 	public EmployeeBuilder withSalary(double salary) {
