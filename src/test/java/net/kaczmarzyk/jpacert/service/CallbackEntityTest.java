@@ -20,7 +20,12 @@ package net.kaczmarzyk.jpacert.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.List;
+
 import net.kaczmarzyk.jpacert.domain.CallbackEntity;
+import net.kaczmarzyk.jpacert.domain.NewCallbackEntity;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
 import org.junit.Test;
@@ -76,5 +81,18 @@ public class CallbackEntityTest extends EjbContainerTestBase {
 		e = crud.merge(e);
 		crud.flushAndClear();
 		assertEquals(2, e.getUpdateCount());
+	}
+	
+	@Test
+	public void orderOfCallbackCalls() {
+		NewCallbackEntity e = new NewCallbackEntity();
+		crud.persist(e);
+		crud.flushAndClear();
+		
+		List<String> expected = Arrays.asList("CallbackEntityListener.prePersist",
+				"NewCallbackEntityListener.prePersist",
+				"CallbackEntity.prePersist", "NewCallbackEntity.prePersist2");
+		
+		assertEquals(expected, e.getCallbackCalls());
 	}
 }

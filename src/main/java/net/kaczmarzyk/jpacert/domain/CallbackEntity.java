@@ -17,23 +17,32 @@
  */
 package net.kaczmarzyk.jpacert.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 @Entity
-@EntityListeners({ UpdateListener.class })
+@EntityListeners({ CallbackEntityListener.class })
 public class CallbackEntity {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	@ElementCollection
+	@OrderColumn
+	private List<String> callbackCalls;
+	
 	private String name;
 	
 	private int updateCount;
@@ -46,6 +55,7 @@ public class CallbackEntity {
 
 	@PrePersist
 	private void prePersist() {
+		getCallbackCalls().add("CallbackEntity.prePersist");
 		prePersistCount++;
 	}
 
@@ -89,5 +99,12 @@ public class CallbackEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public List<String> getCallbackCalls() {
+		if (callbackCalls == null) {
+			callbackCalls = new ArrayList<>();
+		}
+		return callbackCalls;
 	}
 }
