@@ -15,7 +15,7 @@
  * along with jpa-cert; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.kaczmarzyk.jpacert.service;
+package net.kaczmarzyk.jpacert.domain.lifecycle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,8 +24,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
-import net.kaczmarzyk.jpacert.domain.CallbackEntity;
-import net.kaczmarzyk.jpacert.domain.NewCallbackEntity;
+import net.kaczmarzyk.jpacert.domain.lifecycle.CallbackEntity;
+import net.kaczmarzyk.jpacert.domain.lifecycle.NewCallbackEntity;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
 import org.junit.Test;

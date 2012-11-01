@@ -15,22 +15,15 @@
  * along with jpa-cert; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.kaczmarzyk.jpacert.domain;
+package net.kaczmarzyk.jpacert.domain.lifecycle;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.PrePersist;
 
 
-@Entity
-//@ExcludeSuperclassListeners
-//@ExcludeDefaultListeners
-@EntityListeners({NewCallbackEntityListener.class})
-public class NewCallbackEntity extends CallbackEntity {
+public class NewCallbackEntityListener {
 
-	
 	@PrePersist
-	public void prePersist2() { // callback from sub class wouldn't be called if method was overriden (i.e. named prePersist())
-		getCallbackCalls().add("NewCallbackEntity.prePersist2");
+	public void prePersist(NewCallbackEntity entity) {
+		entity.getCallbackCalls().add("NewCallbackEntityListener.prePersist");
 	}
 }

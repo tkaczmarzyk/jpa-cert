@@ -15,7 +15,7 @@
  * along with jpa-cert; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.kaczmarzyk.jpacert.domain;
+package net.kaczmarzyk.jpacert.domain.lifecycle;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
