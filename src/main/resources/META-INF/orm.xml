@@ -17,4 +17,108 @@
 			</entity-listeners>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
+
+	<!-- mapping file defaults -->
+	<package>net.kaczmarzyk.jpacert.domain</package>
+	<!-- <schema>schema</schema>
+	<catalog>catalog</catalog>
+	<access>FIELD</access> -->
+
+	<!-- 
+	<sequence-generator name="seqGen" sequence-name="theSeq" />
+	<table-generator name="tableGen" table="identifiers" pk-column-value="id" />
+	<named-query name="findBySth">
+		<query>select ... from ... where ...</query>
+		<hint name="javax.persistence.cacheRetrieveMode" value="CacheRetrieveMode.BYPASS" />
+	</named-query>
+	-->
+	<!-- 
+	<named-native-query name="findSth"
+		result-class="examples.model.Employee">
+		<query>
+			select ... from ... where ...
+		</query>
+	</named-native-query>
+	<sql-result-set-mapping name="SampleSqlMapping">
+		<entity-result entity-class="Employee">
+			<field-result name="id" column="em_id" />
+		</entity-result>
+		<entity-result entity-class="Branch" />
+		<column-result name="num_certs" />
+	</sql-result-set-mapping>
+ 	-->
+	
+	<!-- 
+	<entity class="Worker">
+		<table name="workers" schema="default"/>
+		<secondary-table name="worker_records">
+			<primary-key-join-column name="worker_id"/>
+		</secondary-table>
+		
+		<inheritance strategy="JOINED"/>
+		<discriminator-column/>
+		<discriminator-value>std</discriminator-value>
+		
+		<attributes>
+			<id name="id">
+				<generated-value strategy="SEQUENCE" generator="empSeq"/>
+				<sequence-generator name="empSeq" sequence-name="emp_id_seq"/>
+			</id>
+			<embedded-id name="id"/>
+			
+			<version name="version"/>
+			
+			<transient name="password"/>
+			
+			<basic name="category">
+				<column name="category"/>
+				<enumerated>STRING</enumerated>
+			</basic>
+			
+			<one-to-many name="history" mapped-by="worker">
+				<order-by/>
+			</one-to-many>
+			
+			<many-to-one name="boss" fetch="LAZY">
+				<join-column name="boss_id"/>
+			</many-to-one>
+			
+			<many-to-many name="assignment">
+				<map-key name="id"/>
+				<join-table name="worker_assignment">
+					<join-column name="worker_id"/>
+					<inverse-join-column name="assignment_id"/>
+				</join-table>
+			</many-to-many>
+			
+			<element-collection name="experienceYearsByPosition" target-class="java.lang.Integer">
+				<map-key-class class="java.lang.String"/>
+				<map-key-column name="position"/>
+				<column name="experience"/>
+				<collection-table name="worker_experience_by_position"/>
+			</element-collection>
+			
+			<embedded name="address">
+				<attribute-override name="street">
+					<column name="address1"/>
+				</attribute-override>
+			</embedded>
+		</attributes>
+		
+		<pre-persist method-name="prePersist"/>
+		
+		<entity-listeners>
+			<entity-listener class="WorkerListener"/>
+		</entity-listeners>
+		
+		<exclude-default-listeners/>
+	</entity>
+	
+	<embeddable class="Address">
+		<attributes>
+			<basic name="street" optional="true"/>
+		</attributes>
+	</embeddable>
+	-->
+	
 </entity-mappings>

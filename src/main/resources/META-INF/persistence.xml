@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	version="1.0">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+						http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
 	
 	<persistence-unit name="defaultUnit" transaction-type="JTA">
 		<jta-data-source>jdbc/__default</jta-data-source>
+		
+		<!-- <class>some.explicitly.specified.entity</class>
+        <exclude-unlisted-classes/> -->
+		
+		<!-- <jar-file>jar with entities</jar-file> -->
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<!-- <mapping-file>META-INF/something_other_than_orm.xml</mapping-file> -->
+        <validation-mode>CALLBACK</validation-mode>
 		
         <properties>
         	<property name="javax.persistence.validation.group.pre-update"
@@ -20,7 +31,5 @@
 			<property name="eclipselink.logging.session" value="true"/>
 			<property name="eclipselink.logging.exceptions" value="true"/>
         </properties>
-        
-        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 	</persistence-unit>
 </persistence>
