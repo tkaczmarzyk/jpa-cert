@@ -18,6 +18,7 @@
 package net.kaczmarzyk.jpacert.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PostLoad;
@@ -25,35 +26,39 @@ import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
-
 @Entity
+@EntityListeners({ UpdateListener.class })
 public class CallbackEntity {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private Long id;
+
+	private String name;
 	
+	private int updateCount;
+
 	private int prePersistCount;
 	private int postLoadCount;
-	
+
 	@Transient
 	private boolean postPersist;
 
-	
 	@PrePersist
 	private void prePersist() {
 		prePersistCount++;
 	}
-	
+
 	@PostLoad
 	private void postLoad() {
 		postLoadCount++;
 	}
-	
+
 	@PostPersist
 	private void postPersist() {
 		postPersist = true;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -68,5 +73,21 @@ public class CallbackEntity {
 
 	public boolean isPostPersist() {
 		return postPersist;
+	}
+
+	public void incUpdateCount() {
+		updateCount++;
+	}
+
+	public int getUpdateCount() {
+		return updateCount;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

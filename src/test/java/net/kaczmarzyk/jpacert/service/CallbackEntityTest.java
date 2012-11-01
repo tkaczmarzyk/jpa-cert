@@ -54,4 +54,27 @@ public class CallbackEntityTest extends EjbContainerTestBase {
 		assertEquals(1, e.getPrePersistCount()); // calling persist on managed entity doesn't touch callbacks
 		assertFalse(e.isPostPersist());
 	}
+	
+	@Test
+	public void updateCallbackTest() {
+		CallbackEntity e = new CallbackEntity();
+		crud.persist(e);
+		crud.flushAndClear();		
+		assertEquals(0, e.getUpdateCount());
+		
+		e = crud.findById(CallbackEntity.class, e.getId());
+		e.setName("updated");
+		crud.persist(e);
+		crud.flushAndClear();
+		assertEquals(1, e.getUpdateCount());
+		
+		e = crud.merge(e);
+		crud.flushAndClear();
+		assertEquals(1, e.getUpdateCount());
+		
+		e.setName("updated2");
+		e = crud.merge(e);
+		crud.flushAndClear();
+		assertEquals(2, e.getUpdateCount());
+	}
 }
