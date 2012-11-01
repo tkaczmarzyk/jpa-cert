@@ -103,4 +103,31 @@ public class DocumentServiceTest extends EjbContainerTestBase {
 			assertThat(ex, causedBy(OptimisticLockException.class));
 		}
 	}
+	
+	@Test
+	public void shouldAllowReadingInConcurrentTransactions() {
+		Document doc = service.newDoc("hello"); // in new tx
+
+		doc = crud.findById(Document.class, doc.getId());
+
+		service.readWithForceIncrement(doc.getId()); // in new tx
+		
+		crud.flushAndClear();
+	}
+	
+	@Test
+	public void shouldNotAllowReadingInConcurrentTransactionsIfForcedVersionIncrement() {
+		Document doc = service.newDoc("hello"); // in new tx
+
+		doc = crud.findById(Document.class, doc.getId(), LockModeType.OPTIMISTIC);
+
+		service.readWithForceIncrement(doc.getId()); // in new tx
+		
+		try {
+			crud.flushAndClear();
+			fail("expected optimistic lock exception");
+		} catch (EJBTransactionRolledbackException ex) {
+			assertThat(ex, causedBy(OptimisticLockException.class));
+		}
+	}
 }
