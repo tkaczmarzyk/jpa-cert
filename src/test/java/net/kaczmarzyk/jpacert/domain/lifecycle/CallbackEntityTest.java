@@ -89,8 +89,8 @@ public class CallbackEntityTest extends EjbContainerTestBase {
 		crud.persist(e);
 		crud.flushAndClear();
 		
-		List<String> expected = Arrays.asList("CallbackEntityListener.prePersist",
-				"NewCallbackEntityListener.prePersist",
+		List<String> expected = Arrays.asList("DefaultListener.prePersist",
+				"CallbackEntityListener.prePersist", "NewCallbackEntityListener.prePersist",
 				"CallbackEntity.prePersist", "NewCallbackEntity.prePersist2");
 		
 		assertEquals(expected, e.getCallbackCalls());

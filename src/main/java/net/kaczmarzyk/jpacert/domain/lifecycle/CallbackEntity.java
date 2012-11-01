@@ -32,6 +32,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 @Entity
+//@ExcludeDefaultListeners
 @EntityListeners({ CallbackEntityListener.class })
 public class CallbackEntity {
 

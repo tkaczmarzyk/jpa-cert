@@ -6,8 +6,15 @@
 	version="2.0">
 	
 	<persistence-unit-metadata>
+		<!-- <xml-mapping-metadata-complete/> --> <!-- would disable annotation processing -->
+	
 		<persistence-unit-defaults>
+			<!-- <schema>schema</schema>
+			<catalog>catalog</catalog> -->
 			<cascade-persist/>
+			<entity-listeners>
+				<entity-listener class="net.kaczmarzyk.jpacert.domain.lifecycle.DefaultListener"/>
+			</entity-listeners>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
 </entity-mappings>
