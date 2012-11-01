@@ -33,6 +33,7 @@ import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.DecimalMin;
 
 
 @Entity
@@ -53,6 +54,7 @@ public class Employee {
 	@OneToMany(mappedBy="employee")
 	private Collection<Certificate> certificates;
 	
+	@DecimalMin("1000")
 	@Column(scale=2)
 	private BigDecimal salary;
 	
