@@ -27,8 +27,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceUnitUtil;
 
 
 @Stateless
@@ -38,12 +41,21 @@ public class CrudService {
 	@PersistenceContext
 	private EntityManager em;
 	
+	@PersistenceUnit
+	private EntityManagerFactory emf;
 	
-	public <T> T findById(Class<T> clazz, Serializable id) {
+	
+	@SuppressWarnings("unchecked")
+	public <T> T findByExample(T detachedEntity) {
+		PersistenceUnitUtil util = emf.getPersistenceUnitUtil();
+		return (T) findById(detachedEntity.getClass(), util.getIdentifier(detachedEntity));
+	}
+	
+	public <T> T findById(Class<T> clazz, Object id) {
 		return findById(clazz, id, new HashMap<String, Object>());
 	}
 	
-	public <T> T findById(Class<T> clazz, Serializable id, Map<String, Object> props) {
+	public <T> T findById(Class<T> clazz, Object id, Map<String, Object> props) {
 		return em.find(clazz, id, props);
 	}
 	

@@ -73,7 +73,7 @@ public class CacheTest extends EjbContainerTestBase {
 		item = crud.persistInNewTx(new Item("aaa"));
 		executeSql("update ITEM set comment = 'bbb' where id = " + item.getId()); // update outside JPA
 		
-		item = crud.findById(Item.class, item.getId()); // from cache
+		item = crud.findByExample(item); // from cache
 		assertEquals("aaa", item.getComment());
 		
 		crud.flushAndClear();
@@ -83,7 +83,7 @@ public class CacheTest extends EjbContainerTestBase {
 		assertEquals("bbb", item.getComment());
 		
 		crud.flushAndClear();
-		item = crud.findById(Item.class, item.getId()); // will use stale cached version
+		item = crud.findByExample(item); // will use stale cached version
 		assertEquals("aaa", item.getComment());
 		
 		crud.flushAndClear();
@@ -93,7 +93,7 @@ public class CacheTest extends EjbContainerTestBase {
 		assertEquals("bbb", item.getComment());
 		
 		crud.flushAndClear();
-		item = crud.findById(Item.class, item.getId()); // will use updated cached version
+		item = crud.findByExample(item); // will use updated cached version
 		assertEquals("bbb", item.getComment());
 	}
 	
