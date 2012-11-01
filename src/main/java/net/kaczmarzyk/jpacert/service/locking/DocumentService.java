@@ -15,54 +15,39 @@
  * along with jpa-cert; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.kaczmarzyk.jpacert.service;
-
-import java.io.Serializable;
-import java.util.List;
+package net.kaczmarzyk.jpacert.service.locking;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import net.kaczmarzyk.jpacert.domain.locking.Document;
 
 
 @Stateless
 @LocalBean
-public class CrudService {
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+public class DocumentService {
 
 	@PersistenceContext
 	private EntityManager em;
 	
 	
-	public <T> T findById(Class<T> clazz, Serializable id) {
-		return em.find(clazz, id);
+	public Document newDoc(String content) {
+		Document doc = new Document(content);
+		em.persist(doc);
+		return doc;
 	}
 	
-	public <T> T persist(T entity) {
-		em.persist(entity);
-		return entity;
+	public void append(Long id, String text) {
+		Document doc = em.find(Document.class, id);
+		doc.append(text);
 	}
 	
-	public <T> T merge(T entity) {
-		return em.merge(entity);
-	}
-	
-	public void flushAndRefresh(Object entity) {
-		em.flush();
-		em.refresh(entity);
-	}
-
-	public void flushAndClear() {
-		em.flush();
-		em.clear();
-	}
-
-	public <T> List<T> findAll(Class<T> clazz) {
-		return em.createQuery("select e from " + clazz.getSimpleName() + " e", clazz)
-				.getResultList();
-	}
-
-	public void refresh(Object entity) {
-		em.refresh(entity);
+	public void deleteAll() {
+		em.createQuery("delete from Document").executeUpdate();
 	}
 }

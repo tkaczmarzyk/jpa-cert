@@ -45,7 +45,7 @@ public abstract class EjbContainerTestBase {
 	protected static Context context;
 	protected static CrudService crud;
 	private static EJBContainer container;
-	private static Level logLevel;
+	private Level logLevel;
 
 	@BeforeClass
 	public static void createContainer() {
@@ -113,14 +113,14 @@ public abstract class EjbContainerTestBase {
 		setLevel(Level.ALL, logger);
 	}
 
-	protected void disableLogs() {
+	protected void disableLogs() {//FIXME doesn't work as expected
 		Logger rootLogger = Logger.getGlobal();
 		logLevel = rootLogger.getLevel();
 		setLevel(Level.OFF, rootLogger);
 	}
 	
 	protected void restoreLogs() {
-		Logger.getGlobal().setLevel(logLevel);
+		setLevel(logLevel, Logger.getGlobal());
 	}
 	
 	private void setLevel(Level level, Logger logger) {
