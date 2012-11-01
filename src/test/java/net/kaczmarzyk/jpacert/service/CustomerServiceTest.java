@@ -58,7 +58,7 @@ public class CustomerServiceTest extends EjbContainerTestBase {
 	/*
 	 * Interesting thing is, that if you enable shared-cache (see persistence.xml),
 	 * then getById will return cached entity without order specified in the mapping
-	 * With cache mode set to NONE we're sure we actually hit database and that
+	 * With cache being disabled we're sure we actually hit database and that
 	 * "order by" is performed as expected in the test. 
 	 */
 	@Test

@@ -21,6 +21,6 @@
 			<property name="eclipselink.logging.exceptions" value="true"/>
         </properties>
         
-        <shared-cache-mode>NONE</shared-cache-mode>
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 	</persistence-unit>
 </persistence>
