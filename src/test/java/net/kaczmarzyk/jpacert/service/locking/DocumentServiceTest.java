@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.persistence.LockModeType;
 import javax.persistence.OptimisticLockException;
 
 import net.kaczmarzyk.jpacert.domain.locking.Document;
@@ -68,6 +69,36 @@ public class DocumentServiceTest extends EjbContainerTestBase {
 			doc.append(" abc");
 			crud.flushAndClear();
 			fail("optimistic lock exception expected");
+		} catch (EJBTransactionRolledbackException ex) {
+			assertThat(ex, causedBy(OptimisticLockException.class));
+		}
+	}
+	
+	@Test
+	public void shouldAllowForUnrepeatableReadIfLockNotSpecified() {
+		Document doc = service.newDoc("hello"); // in new tx
+
+		doc = crud.findById(Document.class, doc.getId()); // becomes managed for the whole test method
+
+		service.append(doc.getId(), " world!"); // in new tx
+		
+		crud.flushAndClear(); // nothing wrong should happen here
+	}
+	
+	@Test
+	public void shouldGuaranteeRepeatableRead() {
+		Document doc = service.newDoc("hello"); // in new tx
+
+		doc = crud.findById(Document.class, doc.getId(), LockModeType.OPTIMISTIC); // becomes managed for the whole test method
+																				// with optimistic read lock
+
+		service.append(doc.getId(), " world!"); // in new tx
+		
+		try {
+			crud.flushAndClear(); // should fail*
+								// (actually the spec doesn't specify which of two transactions should fail,
+								// but for sure they cannot be commited both)
+			fail("expected optimistic lock exception");
 		} catch (EJBTransactionRolledbackException ex) {
 			assertThat(ex, causedBy(OptimisticLockException.class));
 		}

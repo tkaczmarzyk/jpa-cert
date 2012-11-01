@@ -23,7 +23,10 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+
+import net.kaczmarzyk.jpacert.domain.locking.Document;
 
 
 @Stateless
@@ -64,5 +67,9 @@ public class CrudService {
 
 	public void refresh(Object entity) {
 		em.refresh(entity);
+	}
+
+	public Document findById(Class<Document> clazz, Long id, LockModeType lockMode) {
+		return em.find(clazz, id, lockMode);
 	}
 }
