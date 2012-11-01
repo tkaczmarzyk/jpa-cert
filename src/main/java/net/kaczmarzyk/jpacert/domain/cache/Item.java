@@ -29,8 +29,20 @@ public class Item {
 	@Id @GeneratedValue
 	public Long id;
 	
+	private String comment;
+	
+	public Item() {
+	}
+	
+	public Item(String comment) {
+		this.comment = comment;
+	}
 	
 	public Long getId() {
 		return id;
+	}
+	
+	public String getComment() {
+		return comment;
 	}
 }

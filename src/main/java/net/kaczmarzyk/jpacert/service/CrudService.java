@@ -18,7 +18,9 @@
 package net.kaczmarzyk.jpacert.service;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -41,7 +43,11 @@ public class CrudService {
 	
 	
 	public <T> T findById(Class<T> clazz, Serializable id) {
-		return em.find(clazz, id);
+		return findById(clazz, id, new HashMap<String, Object>());
+	}
+	
+	public <T> T findById(Class<T> clazz, Serializable id, Map<String, Object> props) {
+		return em.find(clazz, id, props);
 	}
 	
 	public <T> T persist(T entity) {
@@ -85,4 +91,10 @@ public class CrudService {
 		Object entity = em.getReference(clazz, id);
 		em.remove(entity);
 	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public <T> T findbyIdInNewTx(Class<T> clazz, Long id) {
+		return findById(clazz, id);
+	}
+	
 }

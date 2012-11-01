@@ -17,8 +17,16 @@
  */
 package net.kaczmarzyk.jpacert.domain.cache;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.CacheRetrieveMode;
+import javax.persistence.CacheStoreMode;
+
 import net.kaczmarzyk.jpacert.service.cache.CacheService;
 import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 
@@ -31,6 +39,9 @@ public class CacheTest extends EjbContainerTestBase {
 
 	private CacheService service;
 	private Item item;
+	
+	private Map<String, Object> props = new HashMap<>();
+	
 	
 	@Before
 	public void init() {
@@ -56,4 +67,34 @@ public class CacheTest extends EjbContainerTestBase {
 		
 		assertFalse(service.containsItem(item.getId()));
 	}
+	
+	@Test
+	public void shouldReturnCachedEntityIfCacheNotBypassed() {
+		item = crud.persistInNewTx(new Item("aaa"));
+		executeSql("update ITEM set comment = 'bbb' where id = " + item.getId()); // update outside JPA
+		
+		item = crud.findById(Item.class, item.getId()); // from cache
+		assertEquals("aaa", item.getComment());
+		
+		crud.flushAndClear();
+		props.put("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+		props.put("javax.persistence.cache.storeMode", CacheStoreMode.BYPASS);
+		item = crud.findById(Item.class, item.getId(), props); // buypassing cache totally
+		assertEquals("bbb", item.getComment());
+		
+		crud.flushAndClear();
+		item = crud.findById(Item.class, item.getId()); // will use stale cached version
+		assertEquals("aaa", item.getComment());
+		
+		crud.flushAndClear();
+		props.put("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
+		props.put("javax.persistence.cache.storeMode", CacheStoreMode.USE);
+		item = crud.findById(Item.class, item.getId(), props);
+		assertEquals("bbb", item.getComment());
+		
+		crud.flushAndClear();
+		item = crud.findById(Item.class, item.getId()); // will use updated cached version
+		assertEquals("bbb", item.getComment());
+	}
+	
 }

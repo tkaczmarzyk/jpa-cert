@@ -17,6 +17,9 @@
  */
 package net.kaczmarzyk.jpacert.test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
@@ -104,6 +107,17 @@ public abstract class EjbContainerTestBase {
 	
 	protected TransactionManager getTransactionManager() throws NamingException, Exception {
 		return (TransactionManager) context.lookup("java:appserver/TransactionManager");
+	}
+	
+	protected void executeSql(String sql) {
+		try (Connection conn = getDataSource().getConnection()) {
+			Statement st = conn.createStatement();
+			st.execute(sql);
+			st.close();
+			conn.commit();
+		} catch (SQLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	protected void enableTransactionLogs() {
