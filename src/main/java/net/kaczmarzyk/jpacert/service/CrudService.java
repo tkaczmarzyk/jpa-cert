@@ -22,10 +22,13 @@ import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import net.kaczmarzyk.jpacert.domain.cache.Item;
 import net.kaczmarzyk.jpacert.domain.locking.Document;
 
 
@@ -44,6 +47,11 @@ public class CrudService {
 	public <T> T persist(T entity) {
 		em.persist(entity);
 		return entity;
+	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public <T> T persistInNewTx(T entity) {
+		return persist(entity);
 	}
 	
 	public <T> T merge(T entity) {
@@ -71,5 +79,10 @@ public class CrudService {
 
 	public Document findById(Class<Document> clazz, Long id, LockModeType lockMode) {
 		return em.find(clazz, id, lockMode);
+	}
+
+	public void remove(Class<?> clazz, Object id) {
+		Object entity = em.getReference(clazz, id);
+		em.remove(entity);
 	}
 }
