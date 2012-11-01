@@ -43,13 +43,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 
-public class EmployeeManagerBeanTest extends EjbContainerTestBase {
+public class EmployeeServiceTest extends EjbContainerTestBase {
 
-	private EmployeeManagerBean bean;
+	private EmployeeService bean;
 	
 	@Before
 	public void init() {
-		bean = lookup(EmployeeManagerBean.class);
+		bean = lookup(EmployeeService.class);
 	}
 	
 	@SuppressWarnings("unchecked")

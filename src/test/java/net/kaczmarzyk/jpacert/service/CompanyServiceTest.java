@@ -51,10 +51,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class CompanyManagerBeanTest extends EjbContainerTestBase {
+public class CompanyServiceTest extends EjbContainerTestBase {
 
-	private CompanyManagerBean companyBean;
-	private EmployeeManagerBean emploeeBean;
+	private CompanyService companyBean;
+	private EmployeeService emploeeBean;
 	
 	private Company comp1;
 	private Company comp2;
@@ -62,8 +62,8 @@ public class CompanyManagerBeanTest extends EjbContainerTestBase {
 	
 	@Before
 	public void init() {
-		companyBean = lookup(CompanyManagerBean.class);
-		emploeeBean = lookup(EmployeeManagerBean.class);
+		companyBean = lookup(CompanyService.class);
+		emploeeBean = lookup(EmployeeService.class);
 		
 		comp1 = aCompany("Testers & CO")
 			.with(aBranch(testAddress("b1"))

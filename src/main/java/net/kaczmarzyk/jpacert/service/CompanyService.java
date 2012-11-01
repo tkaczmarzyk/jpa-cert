@@ -35,9 +35,9 @@ import net.kaczmarzyk.jpacert.domain.Shareholder;
 
 @Stateless
 @LocalBean
-public class CompanyManagerBean {
+public class CompanyService {
 
-	private static final Logger log = Logger.getLogger(CompanyManagerBean.class.getName()); 
+	private static final Logger log = Logger.getLogger(CompanyService.class.getName()); 
 	
 	@PersistenceContext
 	private EntityManager em;

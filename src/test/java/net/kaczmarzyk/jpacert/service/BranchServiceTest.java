@@ -32,16 +32,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class BranchManagerBeanTest extends EjbContainerTestBase {
+public class BranchServiceTest extends EjbContainerTestBase {
 
-	private BranchManagerBean bean;
+	private BranchService bean;
 	
 	private Company company;
 	
 	
 	@Before
 	public void init() {
-		bean = lookup(BranchManagerBean.class);
+		bean = lookup(BranchService.class);
 		
 		company = aCompany("WinterSource")
 				.with(aBranch(testAddress("b1"))

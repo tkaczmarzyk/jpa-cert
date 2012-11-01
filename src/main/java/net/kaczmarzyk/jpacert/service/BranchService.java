@@ -29,7 +29,7 @@ import net.kaczmarzyk.jpacert.dto.SalaryStats;
 
 @Stateless
 @LocalBean
-public class BranchManagerBean {
+public class BranchService {
 
 	@PersistenceContext
 	private EntityManager em;

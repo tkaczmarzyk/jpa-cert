@@ -25,13 +25,13 @@ import net.kaczmarzyk.jpacert.test.EjbContainerTestBase;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CertManagerBeanTest extends EjbContainerTestBase {
+public class CertServiceTest extends EjbContainerTestBase {
 
-	private CertManagerBean bean;
+	private CertService bean;
 	
 	@Before
 	public void init() {
-		bean = lookup(CertManagerBean.class);
+		bean = lookup(CertService.class);
 	}
 	
 	@Test

@@ -40,7 +40,7 @@ import net.kaczmarzyk.jpacert.domain.PhoneType;
 
 @Stateless
 @LocalBean
-public class EmployeeManagerBean {
+public class EmployeeService {
 
 	@PersistenceContext
 	private EntityManager em;

@@ -28,7 +28,7 @@ import net.kaczmarzyk.jpacert.domain.OrderKey;
 
 @Stateless
 @LocalBean
-public class OrderManagerBean {
+public class OrderService {
 
 	@PersistenceContext
 	private EntityManager em;

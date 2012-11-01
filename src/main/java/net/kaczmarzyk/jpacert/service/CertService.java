@@ -27,7 +27,7 @@ import net.kaczmarzyk.jpacert.domain.Certificate;
 
 @Stateless
 @LocalBean
-public class CertManagerBean {
+public class CertService {
 
 	@PersistenceContext
 	private EntityManager em;

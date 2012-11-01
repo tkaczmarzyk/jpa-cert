@@ -36,15 +36,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class CustomerManagerBeanTest extends EjbContainerTestBase {
+public class CustomerServiceTest extends EjbContainerTestBase {
 
-	private CustomerManagerBean bean;
+	private CustomerService bean;
 	private CrudService crud;
 	
 	
 	@Before
 	public void lookup() {
-		bean = lookup(CustomerManagerBean.class);
+		bean = lookup(CustomerService.class);
 		crud = lookup(CrudService.class);
 	}
 	

@@ -35,14 +35,14 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
-public class OrderManagerBeanTest extends EjbContainerTestBase {
+public class OrderServiceTest extends EjbContainerTestBase {
 
-	private OrderManagerBean bean;
+	private OrderService bean;
 	private Order order;
 	
 	@Before
 	public void init() {
-		bean = lookup(OrderManagerBean.class);
+		bean = lookup(OrderService.class);
 		
 		order = new Order("programming in scala", new Date());
 		crud.persist(order);

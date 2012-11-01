@@ -39,7 +39,7 @@ import net.kaczmarzyk.jpacert.domain.OrderStatus;
 
 @Stateless
 @LocalBean
-public class CustomerManagerBean {
+public class CustomerService {
 	
 	@PersistenceContext
 	private EntityManager em;
